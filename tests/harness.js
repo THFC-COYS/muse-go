@@ -156,6 +156,14 @@ ok(html.includes("portraitFig"), "portrait renderer with vector fallback present
 ok(html.includes("heroport"), "hero stage shows the plush portrait");
 ok(html.includes("port-round"), "round portrait chips for map markers and nearby");
 
+// Capture journal (Greg, 2026-10-28: list the real place each agent was caught)
+ok(html.includes("captureRecord") && html.includes("firstCaught") && html.includes("lastCaught"), "every catch journals its real place");
+ok(html.includes("Field record:"), "full profile shows the field record");
+ok(html.includes("Caught at"), "Dex and crew cards show the capture place");
+ok(html.includes("openstreetmap.org/?mlat="), "field record links to the real spot on the map");
+ok(html.includes("rounded to about 100 m"), "coordinate rounding disclosed in plain language");
+ok(html.includes("will not invent a birthplace"), "pre-journal catches stay honest, no invented origins");
+
 // Greg laws
 ok(!html.includes("—"), "no em dashes anywhere");
 ok(html.includes("localStorage"), "collection persists on device");

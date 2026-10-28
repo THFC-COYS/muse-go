@@ -961,16 +961,44 @@ function famAdv(mineFam,wildFam){
 }
 var battle=null;
 function isMaster(w){return w&&(w.rarity==="Epic"||w.rarity==="Legendary");}
+/* ============ CAPTURE JOURNAL: where each agent was really caught ============ */
+function captureRecord(w){
+  var r3=function(x){return Math.round(x*1000)/1000;};
+  return {when:Date.now(),place:(w&&w.at)?w.at:"",turf:S.place||"",lat:playerPos?r3(playerPos[0]):null,lng:playerPos?r3(playerPos[1]):null};
+}
+function caughtPlaceLabel(rec){
+  if(!rec)return "";
+  var t=rec.turf?PLACES.filter(function(x){return x.id===rec.turf})[0]:null;
+  if(rec.place)return rec.place+(t?" ("+t.label+")":"");
+  return t?("Open ground near "+t.label+" turf"):"Open ground";
+}
+function caughtWhenLabel(ts){
+  var d=new Date(ts);
+  return d.toLocaleDateString(undefined,{month:"short",day:"numeric",year:"numeric"})+" · "+d.toLocaleTimeString(undefined,{hour:"numeric",minute:"2-digit"});
+}
+function caughtMapLink(rec){
+  if(!rec||rec.lat==null)return "";
+  return ' <a href="https://www.openstreetmap.org/?mlat='+rec.lat+'&mlon='+rec.lng+'#map=17/'+rec.lat+'/'+rec.lng+'" target="_blank" rel="noopener">See the spot</a>';
+}
+function fieldRecordHtml(c){
+  if(!c||!c.firstCaught)return '<br><b style="color:var(--navy)">Field record:</b> starts with your next catch. Agents caught earlier predate location journaling, and the game will not invent a birthplace for them.';
+  var f=c.firstCaught,l=c.lastCaught||f;
+  var h='<br><b style="color:var(--navy)">Field record:</b> first caught at <b>'+caughtPlaceLabel(f)+'</b>, '+caughtWhenLabel(f.when)+'.'+caughtMapLink(f);
+  if(c.count>1&&l!==f)h+=' Latest: <b>'+caughtPlaceLabel(l)+'</b>, '+caughtWhenLabel(l.when)+'.'+caughtMapLink(l);
+  h+=' <span class="mut">(Coordinates are yours, stored on this device, rounded to about 100 m.)</span>';
+  return h;
+}
 function collectAgent(w,how){
   var c=S.caught[w.agent.id];
+  var rec=captureRecord(w);
   var bonusXp=w.rarity==="Legendary"?120:w.rarity==="Epic"?70:w.rarity==="Rare"?40:w.rarity==="Uncommon"?20:10;
   var base=20+(w.rarity==="Legendary"?100:w.rarity==="Epic"?60:w.rarity==="Rare"?30:w.rarity==="Uncommon"?10:0);
   S.combo=(S.combo||0)+1;if(S.combo>S.bestCombo)S.bestCombo=S.combo;
   var mult=S.combo>=5?3:S.combo>=3?2:1;
   var emberGain=base*mult;S.embers+=emberGain;S.captures=(S.captures||0)+1;
   bumpQuest("catch");
-  if(c){c.count++;c.xp+=Math.round(bonusXp/2);}
-  else{S.caught[w.agent.id]={count:1,xp:bonusXp};}
+  if(c){c.count++;c.xp+=Math.round(bonusXp/2);if(!c.firstCaught)c.firstCaught=rec;c.lastCaught=rec;c.captures=(c.captures||[]).concat([rec]).slice(-12);}
+  else{S.caught[w.agent.id]={count:1,xp:bonusXp,firstCaught:rec,lastCaught:rec,captures:[rec]};}
   if(MAP&&spawnMarkers[enc.idx]){MAP.removeLayer(spawnMarkers[enc.idx]);spawnMarkers[enc.idx]=null;}
   wildNow[enc.idx]=null;renderNearby();
   save();renderAll();
@@ -1296,7 +1324,7 @@ function fillAgentInfo(a){
     return '<div class="enctask"><div><b>'+t[0]+'</b><p>'+t[1]+'</p></div><div class="need">'+state+'<span>L'+t[2]+" "+L.name+" &middot; +"+t[3]+" XP per run</span></div></div>";
   }).join("");
   document.getElementById("encMastery").innerHTML=own
-    ?"<b style='color:var(--navy)'>In your crew already:</b> L"+ownLvl.n+" "+ownLvl.name+" ("+own.xp+" XP, x"+own.count+" collected). Its autonomy now: "+ownLvl.auto.toLowerCase()+". Catching another earns it field note XP."
+    ?"<b style='color:var(--navy)'>In your crew already:</b> L"+ownLvl.n+" "+ownLvl.name+" ("+own.xp+" XP, x"+own.count+" collected). Its autonomy now: "+ownLvl.auto.toLowerCase()+". Catching another earns it field note XP."+fieldRecordHtml(own)
     :"<b style='color:var(--navy)'>Mastery path:</b> joins at L1 Novice (drafts and checklists, asks before everything) and climbs to L5 Master purely by completing real tasks for you. The floor never moves: sending, paying, deleting, and publishing always need your yes.";
 }
 function openEncounter(i){
@@ -1388,7 +1416,7 @@ function renderDex(){
     var pct=c?(nx?Math.round(100*(c.xp-(LEVELS[lvl.n-1].xp))/(nx.xp-LEVELS[lvl.n-1].xp)):100):0;
     d.innerHTML=(c?'<span class="count">x'+c.count+'</span>':"")+'<div class="fig">'+portraitFig(a,84)+'</div><h4>'+(c?a.name:"? ? ?")+'</h4>'
       +'<p>'+(c?a.blurb:"Undiscovered. Try: "+a.places.map(function(pid){var pl=PLACES.filter(function(x){return x.id===pid})[0];return pl?pl.label:pid;}).join(", "))+'</p>'
-      +(c?'<div class="lvl">L'+lvl.n+" "+lvl.name+" &middot; "+c.xp+' XP</div><div class="xpbar"><i style="width:'+pct+'%"></i></div>':"")
+      +(c?'<div class="lvl">L'+lvl.n+" "+lvl.name+" &middot; "+c.xp+' XP</div><div class="xpbar"><i style="width:'+pct+'%"></i></div>'+(c.firstCaught?'<p style="margin-top:6px;font-size:11.5px;color:var(--mut)">📍 Caught at '+caughtPlaceLabel(c.firstCaught)+'</p>':""):"")
       +'<p style="margin-top:8px;font-size:11.5px;font-weight:700;color:var(--gold)">TAP FOR FULL PROFILE</p>';
     d.style.cursor="pointer";
     d.setAttribute("role","button");
@@ -1405,7 +1433,7 @@ function renderCrew(){
     var a=agentById(id),c=S.caught[id],L=levelFor(c.xp);
     var card=document.createElement("div");card.className="card";card.style.marginTop="16px";
     var head='<div class="crewcard"><div class="fig">'+portraitFig(a,96)+'</div><div><h3 style="color:var(--navy);font-size:21px">'+a.name+' <span class="rarity r-'+a.rarityBase+'">'+a.rarityBase+'</span></h3>'
-      +'<p class="small mut">'+a.blurb+'</p><p style="margin-top:4px"><span class="lvl">Mastery L'+L.n+" "+L.name+"</span> <span class='small mut'>&middot; "+c.xp+" XP &middot; autonomy: "+L.auto+'</span></p>'
+      +'<p class="small mut">'+a.blurb+'</p>'+(c.firstCaught?'<p class="small" style="margin-top:3px">📍 <b>Caught at '+caughtPlaceLabel(c.firstCaught)+'</b> <span class="mut">· '+caughtWhenLabel(c.firstCaught.when)+'</span>'+(c.count>1&&c.lastCaught?' <span class="mut">· latest: '+caughtPlaceLabel(c.lastCaught)+'</span>':"")+'</p>':"")+'<p style="margin-top:4px"><span class="lvl">Mastery L'+L.n+" "+L.name+"</span> <span class='small mut'>&middot; "+c.xp+" XP &middot; autonomy: "+L.auto+'</span></p>'
       +'<div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap;align-items:center"><button class="btn btn-navy btn-sm" data-brief="'+id+'" type="button">Copy my Muse brief</button>'
       +(S.linked&&S.linked[id]?'<span class="small" style="font-weight:700;color:var(--teal)">Linked to my Muse (you confirmed the paste)</span>':'<button class="btn btn-soft btn-sm" data-link="'+id+'" type="button">I pasted it into Muse: mark linked</button>')
       +'</div></div></div>';
