@@ -91,6 +91,11 @@ p.sub{color:#4a5468;margin-top:6px;max-width:44em}
 .task .need{font-size:11px;font-weight:800;color:var(--gold);text-transform:uppercase;letter-spacing:.05em;white-space:nowrap}
 .receipts{max-height:230px;overflow:auto;margin-top:10px}
 .receipt{border-left:4px solid var(--amber);background:#fffaf0;border-radius:0 10px 10px 0;padding:9px 12px;margin-top:8px;font-size:13.5px}
+.enctask{display:flex;justify-content:space-between;gap:10px;align-items:flex-start;border:1px solid var(--line);border-radius:10px;background:#fff;padding:8px 10px;margin-top:6px;text-align:left}
+.enctask b{font-size:13.5px;color:var(--navy);display:block}
+.enctask p{font-size:12px;color:#5a6579}
+.enctask .need{font-size:10.5px;font-weight:800;color:var(--gold);text-transform:uppercase;letter-spacing:.04em;white-space:nowrap;text-align:right}
+.enctask .need span{display:block;color:#8a93a6;font-weight:600;text-transform:none;letter-spacing:0}
 .receipt b{color:var(--navy)}
 .receipt time{color:#8a93a6;font-size:12px}
 table{width:100%;border-collapse:collapse;margin-top:14px;font-size:14px}
@@ -174,7 +179,7 @@ footer b{color:var(--cream)}
 
 <section id="dex">
   <h2 class="sec">2. The Agent Dex</h2>
-  <p class="sub">Twelve launch species. Every one wears the Muse family look, the navy figure with the glowing amber core, dressed for its profession so you can read it at a glance. Greyed out means not yet collected.</p>
+  <p class="sub">Twelve launch species. Every one wears the Muse family look, the navy figure with the glowing amber core, dressed for its profession so you can read it at a glance. Greyed out means not yet collected. Tap any card, or any wild agent on the radar, to see its full profile: the tasks it can accomplish for you, what each mastery level unlocks, and where it lives.</p>
   <div class="dexgrid" id="dexGrid"></div>
 </section>
 
@@ -278,6 +283,12 @@ footer b{color:var(--cream)}
     <h3 id="encName">Wild Agent</h3>
     <p><span class="rarity" id="encRarity">Common</span></p>
     <p class="small mut" id="encDesc" style="margin-top:8px"></p>
+    <p class="small" id="encSpec" style="margin-top:8px;text-align:left"></p>
+    <div style="margin-top:12px;text-align:left">
+      <b class="small" style="color:var(--navy);letter-spacing:.05em">WHAT IT CAN DO FOR YOU, BY MASTERY</b>
+      <div id="encTasks"></div>
+      <p class="small mut" id="encMastery" style="margin-top:10px"></p>
+    </div>
     <div class="orbrow" id="orbRow"></div>
     <p class="small" id="encMsg" aria-live="polite" style="min-height:22px;font-weight:600;color:var(--navy)"></p>
     <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:8px">
@@ -482,17 +493,46 @@ document.getElementById("scanBtn").addEventListener("click",function(){
   document.getElementById("scanNote").textContent="Scan complete. Tap a wild agent to try to collect it before it wanders off.";
 });
 /* ============ ENCOUNTER ============ */
-var enc={idx:-1,orbs:3,done:false};
+var enc={idx:-1,orbs:3,done:false,infoOnly:false};
+function turfNames(a){return a.places.map(function(pid){var pl=PLACES.filter(function(x){return x.id===pid})[0];return pl?pl.label:pid;}).join(" and ");}
+function fillAgentInfo(a){
+  document.getElementById("encSpec").innerHTML="<b style='color:var(--navy)'>Its job, once collected:</b> "+a.brief.what.charAt(0).toUpperCase()+a.brief.what.slice(1)+".";
+  var own=S.caught[a.id], ownLvl=own?levelFor(own.xp):null;
+  document.getElementById("encTasks").innerHTML=a.tasks.map(function(t){
+    var L=LEVELS[t[2]-1];
+    var state=own?(ownLvl.n>=t[2]?"Unlocked in your crew":"Locked until L"+t[2]):"Unlocks at L"+t[2];
+    return '<div class="enctask"><div><b>'+t[0]+'</b><p>'+t[1]+'</p></div><div class="need">'+state+'<span>L'+t[2]+" "+L.name+" &middot; +"+t[3]+" XP per run</span></div></div>";
+  }).join("");
+  document.getElementById("encMastery").innerHTML=own
+    ?"<b style='color:var(--navy)'>In your crew already:</b> L"+ownLvl.n+" "+ownLvl.name+" ("+own.xp+" XP, x"+own.count+" collected). Its autonomy now: "+ownLvl.auto.toLowerCase()+". Catching another earns it field note XP."
+    :"<b style='color:var(--navy)'>Mastery path:</b> joins at L1 Novice (drafts and checklists, asks before everything) and climbs to L5 Master purely by completing real tasks for you. The floor never moves: sending, paying, deleting, and publishing always need your yes.";
+}
 function openEncounter(i){
-  enc={idx:i,orbs:3,done:false};
+  enc={idx:i,orbs:3,done:false,infoOnly:false};
   var w=wildNow[i];if(!w)return;
   document.getElementById("encFig").innerHTML=museFig(w.agent,130);
   document.getElementById("encName").textContent="Wild "+w.agent.name;
   var r=document.getElementById("encRarity");r.textContent=w.rarity;r.className="rarity r-"+w.rarity;
-  document.getElementById("encDesc").textContent=w.agent.blurb+" Home turf: "+w.agent.places.map(function(pid){var pl=PLACES.filter(function(x){return x.id===pid})[0];return pl?pl.label:pid;}).join(" and ")+". Catch chance per orb: "+Math.round(CATCH[w.rarity]*100)+"%.";
+  document.getElementById("encDesc").textContent=w.agent.blurb+" Home turf: "+turfNames(w.agent)+". Species base rarity: "+w.agent.rarityBase+". Catch chance per orb: "+Math.round(CATCH[w.rarity]*100)+"%.";
+  fillAgentInfo(w.agent);
   document.getElementById("encMsg").textContent="It watches you with its amber core glowing. Throw an orb?";
-  document.getElementById("throwBtn").disabled=false;
+  var tb=document.getElementById("throwBtn");tb.style.display="";tb.disabled=false;
+  document.getElementById("orbRow").style.display="";
+  document.getElementById("fleeBtn").textContent="Walk away";
   drawOrbs();
+  document.getElementById("encModal").classList.add("open");
+}
+function openProfile(a){
+  enc={idx:-1,orbs:0,done:true,infoOnly:true};
+  document.getElementById("encFig").innerHTML=museFig(a,130);
+  document.getElementById("encName").textContent=a.name+" (Agent Dex)";
+  var r=document.getElementById("encRarity");r.textContent=a.rarityBase;r.className="rarity r-"+a.rarityBase;
+  document.getElementById("encDesc").textContent=a.blurb+" Home turf: "+turfNames(a)+". Find it there, or anywhere at a trickle.";
+  fillAgentInfo(a);
+  document.getElementById("encMsg").textContent=S.caught[a.id]?"This agent is in your crew. Run its tasks in My Crew below.":"Not collected yet. Scan on its home turf for the best odds.";
+  document.getElementById("throwBtn").style.display="none";
+  document.getElementById("orbRow").style.display="none";
+  document.getElementById("fleeBtn").textContent="Close";
   document.getElementById("encModal").classList.add("open");
 }
 function drawOrbs(){
@@ -540,7 +580,12 @@ function renderDex(){
     var pct=c?(nx?Math.round(100*(c.xp-(LEVELS[lvl.n-1].xp))/(nx.xp-LEVELS[lvl.n-1].xp)):100):0;
     d.innerHTML=(c?'<span class="count">x'+c.count+'</span>':"")+'<div class="fig">'+museFig(a,74)+'</div><h4>'+(c?a.name:"? ? ?")+'</h4>'
       +'<p>'+(c?a.blurb:"Undiscovered. Try: "+a.places.map(function(pid){var pl=PLACES.filter(function(x){return x.id===pid})[0];return pl?pl.label:pid;}).join(", "))+'</p>'
-      +(c?'<div class="lvl">L'+lvl.n+" "+lvl.name+" &middot; "+c.xp+' XP</div><div class="xpbar"><i style="width:'+pct+'%"></i></div>':"");
+      +(c?'<div class="lvl">L'+lvl.n+" "+lvl.name+" &middot; "+c.xp+' XP</div><div class="xpbar"><i style="width:'+pct+'%"></i></div>':"")
+      +'<p style="margin-top:8px;font-size:11.5px;font-weight:700;color:var(--gold)">TAP FOR FULL PROFILE</p>';
+    d.style.cursor="pointer";
+    d.setAttribute("role","button");
+    d.setAttribute("aria-label","View the full profile of "+a.name+": its tasks, mastery path, and home turf");
+    (function(agent){d.addEventListener("click",function(){openProfile(agent);});})(a);
     g.appendChild(d);
   });
 }

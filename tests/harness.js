@@ -60,6 +60,15 @@ ok(html.includes("test Coins (v1 simulation"), "coin purchases simulated and lab
 ok(html.includes("Daily streak"), "daily streak earn wired");
 ok(html.includes("rosterCapacity"), "roster capacity enforced");
 
+// Wild agent profile (Greg, 2026-10-28: tapping a wild agent shows its info)
+ok(html.includes("WHAT IT CAN DO FOR YOU, BY MASTERY"), "encounter shows task list by mastery");
+ok(html.includes("Its job, once collected:"), "encounter shows the agent specialty");
+ok(html.includes("Mastery path:"), "encounter shows the mastery path");
+ok(html.includes("fillAgentInfo"), "shared profile filler wired for encounter and Dex");
+ok(html.includes("openProfile"), "Dex cards open the full profile");
+ok(html.includes("TAP FOR FULL PROFILE"), "Dex cards advertise the profile tap");
+ok(html.includes("Unlocks at L"), "task unlock levels shown on profile");
+
 // Greg laws
 ok(!html.includes("—"), "no em dashes anywhere");
 ok(html.includes("localStorage"), "collection persists on device");
