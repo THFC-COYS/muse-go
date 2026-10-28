@@ -116,6 +116,17 @@ ok(html.includes("buildStage") && html.includes("SHOWCASE"), "rotating character
 ok(html.includes("rotateY"), "pointer tilt gives the stage real 3D depth");
 ok(!html.includes('class="hero-art"'), "old flat hero art replaced");
 
+// Profession outfits (Greg, 2026-10-28 night: a Nurse must not look like a Teacher)
+ok(html.includes("outfitLayers"), "per profession outfit renderer present");
+ok(html.includes("#37b8a6"), "nurse wears teal scrubs");
+ok(html.includes("#ff8c1a"), "builder wears a hi-vis vest");
+ok(html.includes("d43a4f"), "doctor and chef carry their red marks (cross, neckerchief)");
+ok(html.includes("#7a5fa0"), "chaplain wears the purple stole");
+ok(html.includes("clipPath"), "outfits are clipped to the torso");
+["doctor","nurse","chef","teacher","scientist","mechanic","pilot","trainer","artist","banker","gardener","builder","chaplain","motivator"].forEach(function(id){
+  ok(html.includes('case "'+id+'"'), "outfit defined for: " + id);
+});
+
 // Greg laws
 ok(!html.includes("—"), "no em dashes anywhere");
 ok(html.includes("localStorage"), "collection persists on device");
