@@ -156,6 +156,10 @@ ok(html.includes("portraitFig"), "portrait renderer with vector fallback present
 ok(html.includes("heroport"), "hero stage shows the plush portrait");
 ok(html.includes("port-round"), "round portrait chips for map markers and nearby");
 
+// Import mechanics (Greg, 2026-10-28): the brief opens by telling Muse to make the agent
+ok(html.includes("make the following agent for me and add it to my agent team"), "every exported brief opens with the make-this-agent instruction to Muse");
+ok(html.includes("imported into Muse, where it joins your own agent team"), "gate pitch explains the import into Muse and the agent team");
+
 // Capture journal (Greg, 2026-10-28: list the real place each agent was caught)
 ok(html.includes("captureRecord") && html.includes("firstCaught") && html.includes("lastCaught"), "every catch journals its real place");
 ok(html.includes("Field record:"), "full profile shows the field record");
