@@ -105,6 +105,17 @@ ok(html.includes("stationHere") && html.includes("fortRewards"), "forts: station
 ok(html.includes("within 100"), "depots: real proximity rule stated");
 ok(html.includes("data-poicat") === false, "detected places are display only, never tappable turf");
 
+// Meta style landing + 3D animated characters (Greg, 2026-10-28 night)
+ok(html.includes("museFig3D"), "3D shaded Muse figure renderer present");
+ok(html.includes("stage3d") && html.includes("stageInner"), "3D landing stage present");
+ok(html.includes("conic-gradient"), "rotating gradient halo behind the hero character");
+ok(html.includes("meshdrift"), "animated Meta style gradient mesh on the landing");
+ok(html.includes("#0082fb") && html.includes("#a033ff") && html.includes("#ff5280"), "Meta gradient palette in use");
+ok(html.includes("corepulse"), "hero core pulses with animation");
+ok(html.includes("buildStage") && html.includes("SHOWCASE"), "rotating character showcase wired");
+ok(html.includes("rotateY"), "pointer tilt gives the stage real 3D depth");
+ok(!html.includes('class="hero-art"'), "old flat hero art replaced");
+
 // Greg laws
 ok(!html.includes("—"), "no em dashes anywhere");
 ok(html.includes("localStorage"), "collection persists on device");
