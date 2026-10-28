@@ -69,6 +69,20 @@ ok(html.includes("openProfile"), "Dex cards open the full profile");
 ok(html.includes("TAP FOR FULL PROFILE"), "Dex cards advertise the profile tap");
 ok(html.includes("Unlocks at L"), "task unlock levels shown on profile");
 
+// GO style map experience (Greg, 2026-10-28)
+ok(html.includes("leaflet@1.9.4"), "Leaflet map library loaded");
+ok(html.includes("tile.openstreetmap.org"), "real OpenStreetMap tiles");
+ok(html.includes("overpass-api.de/api/interpreter"), "real place detection via Overpass");
+ok(html.includes("detectPlaces"), "place detection wired to geolocation");
+ok(html.includes("catFromTags"), "POI tags mapped to game place categories");
+ok(html.includes('id="nearbyPanel"'), "Nearby panel present");
+ok(html.includes('id="trainerCard"'), "trainer profile card on the map");
+ok(html.includes('id="buddyChip"'), "buddy chip on the map");
+ok(html.includes('id="scanBtn"'), "orb scan button present");
+ok(html.includes("renderMapSpawns"), "wild agents stand on the real map");
+ok(html.includes("OpenStreetMap contributors"), "map attribution shown");
+ok(html.includes("box.enc"), "encounter screen styled as a catch screen");
+
 // Greg laws
 ok(!html.includes("—"), "no em dashes anywhere");
 ok(html.includes("localStorage"), "collection persists on device");

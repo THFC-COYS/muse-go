@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Muse GO: Collect Agents in the Wild</title>
 <meta name="description" content="A Pokemon GO style collection game for Muse agents. Explore the real world, collect profession agents where they live, and put them to work.">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 <style>
 :root{
   --navy:#101c3d; --navy2:#1b2c5b; --ink:#0c1428; --cream:#faf5ea; --paper:#fffdf6;
@@ -110,6 +111,52 @@ th{color:var(--navy);font-size:12.5px;text-transform:uppercase;letter-spacing:.0
 .orb{width:26px;height:26px;border-radius:50%;background:radial-gradient(circle at 35% 30%,var(--amber2),var(--gold));border:2px solid #c97a08}
 .orb.spent{opacity:.25;filter:grayscale(1)}
 pre.brief{background:var(--navy);color:#e8edfb;border-radius:14px;padding:16px;font-size:12.8px;line-height:1.55;white-space:pre-wrap;text-align:left;max-height:320px;overflow:auto;font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+/* ===== GO style map stage ===== */
+.mapstage{position:relative;margin-top:16px;border-radius:22px;overflow:hidden;box-shadow:var(--shadow);border:1px solid var(--line);background:#dcebf5}
+#map{height:520px;width:100%;z-index:1;background:#dcebf5}
+.mapstage .ovl{position:absolute;z-index:600}
+.trainer{top:12px;left:12px;display:flex;gap:10px;align-items:center;background:rgba(255,253,246,.94);border-radius:999px;padding:6px 16px 6px 6px;box-shadow:var(--shadow);cursor:pointer;border:none;font:inherit;text-align:left}
+.trainer .fig{width:40px;height:48px}
+.trainer b{color:var(--navy);font-size:14.5px;display:block;line-height:1.15}
+.trainer .xpmini{width:110px;height:7px;background:#eee3cb;border-radius:99px;overflow:hidden;margin-top:3px}
+.trainer .xpmini i{display:block;height:100%;background:linear-gradient(90deg,var(--amber),var(--gold))}
+.trainer small{color:#5a6579;font-size:11px}
+.recenter{top:12px;right:12px;width:46px;height:46px;border-radius:50%;border:none;background:rgba(255,253,246,.94);box-shadow:var(--shadow);font-size:20px;cursor:pointer}
+.buddy{left:12px;bottom:86px;display:flex;align-items:center;gap:8px;background:rgba(255,253,246,.94);border-radius:999px;padding:5px 14px 5px 5px;box-shadow:var(--shadow);font-size:12.5px;font-weight:700;color:var(--navy)}
+.buddy .fig{width:34px;height:40px}
+.nearby{right:12px;bottom:86px;width:196px;background:rgba(16,28,61,.88);color:#eef2fd;border-radius:16px;padding:10px 12px;box-shadow:var(--shadow);backdrop-filter:blur(4px)}
+.nearby b{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--amber2)}
+.nearby .nrow{display:flex;align-items:center;gap:8px;margin-top:7px;font-size:12.5px;cursor:pointer;background:none;border:none;color:inherit;font:inherit;text-align:left;width:100%;padding:2px 0}
+.nearby .nrow .fig{width:26px;height:31px;flex:none}
+.nearby .nrow small{color:#aebadd;display:block;font-size:11px}
+.nearby .nempty{font-size:12.5px;color:#aebadd;margin-top:6px}
+.orbmain{left:50%;bottom:16px;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:2px;background:none;border:none;cursor:pointer;font:inherit}
+.orbmain .ball{width:64px;height:64px;border-radius:50%;background:radial-gradient(circle at 34% 28%,#ffe1a1,var(--amber) 55%,var(--gold));border:4px solid #fffdf6;box-shadow:0 10px 24px rgba(16,28,61,.35);display:flex;align-items:center;justify-content:center;transition:transform .1s ease}
+.orbmain:active .ball{transform:scale(.93)}
+.orbmain .ball i{width:22px;height:22px;border-radius:50%;background:#fffdf6;box-shadow:inset 0 0 0 4px rgba(16,28,61,.15)}
+.orbmain span{color:#fff;font-size:11px;font-weight:800;letter-spacing:.1em;text-shadow:0 1px 5px rgba(16,28,61,.7)}
+.menupop{left:50%;bottom:96px;transform:translateX(-50%);background:rgba(255,253,246,.97);border-radius:18px;box-shadow:var(--shadow);padding:10px;display:none;gap:6px;flex-wrap:wrap;justify-content:center;width:min(430px,92%)}
+.menupop.open{display:flex}
+.menupop a{color:var(--navy);text-decoration:none;font-weight:700;font-size:14px;background:#f1e7d0;border-radius:999px;padding:9px 16px}
+.mapnote{position:absolute;left:12px;bottom:16px;z-index:600;background:rgba(16,28,61,.75);color:#dfe6f7;font-size:11px;border-radius:8px;padding:4px 9px}
+.wildicon{background:none;border:none;text-align:center}
+.wildicon .pin{animation:bob 2.2s ease-in-out infinite;filter:drop-shadow(0 6px 8px rgba(16,28,61,.4))}
+.wildicon .nm{color:#fff;font-size:11px;font-weight:800;text-shadow:0 1px 4px rgba(0,0,0,.75);margin-top:-4px}
+.wildicon .pulse{width:44px;height:14px;margin:-8px auto 0;border-radius:50%;background:rgba(245,166,35,.4);animation:pulse 2s ease-out infinite}
+@keyframes pulse{0%{transform:scale(.55);opacity:.9}100%{transform:scale(1.5);opacity:0}}
+.youicon{background:none;border:none;text-align:center}
+.youicon .ringpulse{width:56px;height:56px;margin:0 auto;border-radius:50%;background:rgba(43,179,163,.3);animation:pulse 2.4s ease-out infinite;display:flex;align-items:center;justify-content:center}
+/* ===== Encounter screen ===== */
+.modal .box.enc{background:linear-gradient(180deg,#bfe0f2 0%,#dcefe0 52%,#8fc98a 100%);border:6px solid #fffdf6}
+.modal .box.enc .fig{animation:bob 2s ease-in-out infinite}
+.modal .box.enc.shake .fig{animation:shake .45s ease}
+@keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-13px) rotate(-4deg)}40%{transform:translateX(11px) rotate(4deg)}60%{transform:translateX(-8px)}80%{transform:translateX(6px)}}
+.catchzone{margin-top:14px;background:rgba(255,253,246,.88);border-radius:16px;padding:12px}
+#throwBtn{width:74px;height:74px;border-radius:50%;padding:0;background:radial-gradient(circle at 34% 28%,#ffe1a1,var(--amber) 55%,var(--gold));border:4px solid #fffdf6;box-shadow:0 8px 20px rgba(16,28,61,.3);position:relative}
+#throwBtn:after{content:"";position:absolute;inset:24px;border-radius:50%;background:#fffdf6;box-shadow:inset 0 0 0 4px rgba(16,28,61,.15)}
+#throwBtn:disabled{opacity:.45}
+.throwlbl{font-size:11px;font-weight:800;letter-spacing:.08em;color:var(--navy);text-transform:uppercase;margin-top:5px}
+@media(max-width:640px){#map{height:460px}.nearby{width:160px;bottom:96px}.buddy{bottom:96px}}
 .toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--navy);color:var(--cream);padding:12px 20px;border-radius:999px;font-weight:600;font-size:14.5px;z-index:200;transition:transform .3s ease;box-shadow:var(--shadow);max-width:92vw;text-align:center}
 .toast.show{transform:translateX(-50%) translateY(0)}
 footer{margin-top:44px;background:var(--navy);color:#c6d2ee;border-radius:28px 28px 0 0}
@@ -168,11 +215,24 @@ footer b{color:var(--cream)}
     <p class="small mut">In v1 you declare the place, and the spawn table does the rest. In the native app, real place categories come from the map itself. <button class="btn btn-soft btn-sm" id="geoBtn" type="button">Use my location</button> <span class="small" id="geoOut" aria-live="polite"></span></p>
     <div class="chips" id="placeChips" role="group" aria-label="Choose your current place"></div>
     <div class="flavor" id="flavorBox">Pick a place to see what tends to spawn there.</div>
-    <div style="margin-top:14px;display:flex;gap:10px;flex-wrap:wrap;align-items:center">
-      <button class="btn btn-amber" id="scanBtn" type="button">Scan the area</button>
-      <span class="small mut" id="scanNote">A scan reveals up to 3 wild agents near you.</span>
+    <div class="mapstage" id="mapStage">
+      <div id="map" role="application" aria-label="Live map of your surroundings with wild agents"></div>
+      <button class="ovl trainer" id="trainerCard" type="button" aria-label="Your explorer profile">
+        <span class="fig" id="trainerFig"></span>
+        <span><b>Explorer</b><span class="xpmini"><i id="trainerXp" style="width:0%"></i></span><small id="trainerMeta">Level 1 &middot; 0 XP</small></span>
+      </button>
+      <button class="ovl recenter" id="recenterBtn" type="button" aria-label="Re center the map on me">◎</button>
+      <div class="ovl buddy" id="buddyChip"><span class="fig" id="buddyFig"></span><span id="buddyName">Buddy: none yet</span></div>
+      <div class="ovl nearby" id="nearbyPanel"><b>Nearby</b><div class="nempty">No scan yet. Tap the orb to scan and wild agents will appear on the map and here.</div></div>
+      <div class="ovl menupop" id="menuPop">
+        <a href="#dex">Agent Dex</a><a href="#crew">My Crew</a><a href="#shop">Shop</a><a href="#design">Game Design</a><a href="#native">Native Path</a>
+      </div>
+      <button class="ovl orbmain" id="scanBtn" type="button" aria-label="Scan the area for wild agents"><span class="ball"><i></i></span><span>SCAN</span></button>
+      <div class="mapnote">Map © OpenStreetMap contributors</div>
+      <div class="radar" id="radar" style="display:none"><div class="you"><div class="ring" id="youFig"></div>YOU</div><div class="radar-empty" id="radarEmpty">No scan yet. Wild agents will appear here, close enough to tap.</div></div>
     </div>
-    <div class="radar" id="radar"><div class="you"><div class="ring" id="youFig"></div>YOU</div><div class="radar-empty" id="radarEmpty">No scan yet. Wild agents will appear here, close enough to tap.</div></div>
+    <p class="small mut" id="scanNote" style="margin-top:10px">Tap the golden orb to scan: wild agents appear standing on the real map, near the places they belong. Tap one to meet it. Your profile sits top left (tap it for the menu), your buddy bottom left, and the Nearby panel bottom right: the classic collection game layout, rebuilt for Muse agents.</p>
+    <div id="poiBox" aria-live="polite"></div>
     <div class="safety"><b>Play safe, always:</b> agents only spawn in public places. Never trespass, never play while driving, and watch the real world, not just the screen. If a place is closed, private, or feels wrong, the agent is not worth it. There will be another one.</div>
   </div>
 </section>
@@ -264,7 +324,7 @@ footer b{color:var(--cream)}
   <h2 class="sec">From web proof to native app</h2>
   <div class="grid2" style="margin-top:16px">
     <div class="card"><b style="color:var(--navy)">Real in this v1</b><p class="small" style="margin-top:6px">Real device geolocation (with your permission), the full place weighted spawn engine, rarity and catch math, the 14 species Dex, mastery XP and levels, task runs with receipts, your collection saved on this device, and a copy ready Muse brief for every agent you own.</p></div>
-    <div class="card"><b style="color:var(--navy)">Stubbed or simulated in v1</b><p class="small" style="margin-top:6px">You declare the place category yourself (the native app reads real place types from the map). Task outputs are simulated in game; the exported brief is what makes the agent real inside your own Muse. No accounts, no server, no background tracking.</p></div>
+    <div class="card"><b style="color:var(--navy)">Stubbed or simulated in v1</b><p class="small" style="margin-top:6px">Place detection is real but young: with location shared, the game reads actual OpenStreetMap places around you and sets your turf from them (Google Places is the production upgrade, and it needs an API key). You can always override with your own pick. Task outputs are simulated in game; the exported brief is what makes the agent real inside your own Muse. No accounts, no server, no background tracking.</p></div>
     <div class="card"><b style="color:var(--navy)">Native v2 (iOS + Android, one codebase)</b><p class="small" style="margin-top:6px">React Native + Expo in TypeScript (the web build's catalog, spawn tables, and progression logic carry over as shared modules), a real map with live place categories (Google Places primary, OpenStreetMap fallback; the web prototype can read OpenStreetMap place tags), accounts with server checked spawns, alerts when a rare agent is near, optional camera AR encounters with a fully playable non AR mode, walking friendly spawn points vetted as public, and team collections. One codebase, both stores. One more honest web limit: clearing this browser's data erases a web collection; accounts fix that in v2.</p></div>
     <div class="card"><b style="color:var(--navy)">Muse integration, honestly</b><p class="small" style="margin-top:6px">Today the bridge is the brief: collect an agent, copy its WHO / WHAT / WHERE YOU STAY IN CHARGE brief into Muse, and it works there. A one tap "send to my Muse" needs a Muse provisioning API that does not exist yet; when it lands, the Dex becomes the front door to your whole crew.</p></div>
   </div>
@@ -278,7 +338,7 @@ footer b{color:var(--cream)}
 </div></footer>
 
 <div class="modal" id="encModal" role="dialog" aria-modal="true" aria-labelledby="encName">
-  <div class="box">
+  <div class="box enc" id="encBox">
     <div id="encFig"></div>
     <h3 id="encName">Wild Agent</h3>
     <p><span class="rarity" id="encRarity">Common</span></p>
@@ -291,15 +351,17 @@ footer b{color:var(--cream)}
     </div>
     <div class="orbrow" id="orbRow"></div>
     <p class="small" id="encMsg" aria-live="polite" style="min-height:22px;font-weight:600;color:var(--navy)"></p>
-    <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:8px">
-      <button class="btn btn-amber" id="throwBtn" type="button">Throw a Muse Orb</button>
-      <button class="btn btn-soft" id="fleeBtn" type="button">Walk away</button>
+    <div class="catchzone">
+      <button id="throwBtn" type="button" aria-label="Throw a Muse Orb"></button>
+      <div class="throwlbl">Throw a Muse Orb</div>
+      <button class="btn btn-soft btn-sm" id="fleeBtn" type="button" style="margin-top:10px">Walk away</button>
     </div>
   </div>
 </div>
 
 <div class="toast" id="toast" role="status"></div>
 
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
 "use strict";
 /* ============ DATA: the launch roster ============ */
@@ -444,6 +506,82 @@ function agentById(id){return AGENTS.filter(function(a){return a.id===id})[0];}
 function levelFor(xp){var L=LEVELS[0];LEVELS.forEach(function(l){if(xp>=l.xp)L=l;});return L;}
 function nextLevel(xp){for(var i=0;i<LEVELS.length;i++){if(xp<LEVELS[i].xp)return LEVELS[i];}return null;}
 function totalXp(){var t=0;Object.keys(S.caught).forEach(function(k){t+=S.caught[k].xp;});return t;}
+/* ============ LIVE MAP (OpenStreetMap) + PLACE DETECTION (Overpass) ============ */
+var MAP=null,PLAYER=null,spawnMarkers=[],mapCenter=[33.4484,-112.074],playerPos=null,DETECTED={};
+function haversineM(a,b,c,d){var R=6371000,t=function(x){return x*Math.PI/180},dLa=t(c-a),dLo=t(d-b);var h=Math.sin(dLa/2)*Math.sin(dLa/2)+Math.cos(t(a))*Math.cos(t(c))*Math.sin(dLo/2)*Math.sin(dLo/2);return Math.round(2*R*Math.asin(Math.sqrt(h)));}
+function initMap(){
+  if(!window.L){document.getElementById("map").style.display="none";document.getElementById("radar").style.display="block";return;}
+  MAP=L.map("map",{zoomControl:false,attributionControl:false}).setView(mapCenter,16);
+  L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png",{maxZoom:19}).addTo(MAP);
+  var icon=L.divIcon({className:"youicon",html:'<div class="ringpulse">'+museFig({name:"You",accent:"#2bb3a3",prop:""},44)+'</div>',iconSize:[56,56],iconAnchor:[28,28]});
+  PLAYER=L.marker(mapCenter,{icon:icon}).addTo(MAP);
+}
+function catFromTags(t){
+  if(!t)return null;
+  var a=t.amenity||"",s=t.shop||"",l=t.leisure||"",tu=t.tourism||"",h=t.healthcare||"";
+  if(a==="hospital"||a==="clinic"||a==="doctors"||h==="hospital"||h==="clinic")return "hospital";
+  if(a==="pharmacy"||h==="pharmacy")return "pharmacy";
+  if(a==="restaurant"||a==="cafe"||a==="fast_food"||a==="bar"||a==="pub")return "restaurant";
+  if(s==="supermarket"||s==="convenience"||s==="grocery"||a==="marketplace")return "grocery";
+  if(a==="school"||a==="university"||a==="college")return "school";
+  if(a==="library")return "library";
+  if(l==="fitness_centre"||l==="sports_centre"||a==="gym")return "gym";
+  if(l==="park"||l==="garden"||l==="pitch")return "park";
+  if(t.aeroway==="aerodrome"||t.aeroway==="terminal"||a==="airport")return "airport";
+  if(s==="car_repair"||s==="car"||a==="fuel")return "autoshop";
+  if(a==="bank"||a==="atm")return "bank";
+  if(tu==="museum"||tu==="gallery"||a==="arts_centre"||a==="theatre"||a==="cinema")return "museum";
+  if(s==="hardware"||s==="doityourself"||s==="trade")return "hardware";
+  if(a==="place_of_worship")return "worship";
+  if(t.office)return "office";
+  if(t.building==="residential"||t.building==="apartments"||t.building==="house")return "home";
+  return null;
+}
+function overpassQuery(q){
+  var mirrors=["https://overpass-api.de/api/interpreter","https://overpass.kumi.systems/api/interpreter","https://overpass.nchc.org.tw/api/interpreter"];
+  function attempt(i){
+    var ctl=("AbortController" in window)?new AbortController():null;
+    var timer=ctl?setTimeout(function(){ctl.abort();},13000):null;
+    return fetch(mirrors[i],{method:"POST",headers:{"Content-Type":"application/x-www-form-urlencoded"},body:"data="+encodeURIComponent(q),signal:ctl?ctl.signal:undefined})
+    .then(function(r){if(timer)clearTimeout(timer);if(!r.ok)throw new Error("overpass "+r.status);return r;})
+    .catch(function(e){if(timer)clearTimeout(timer);if(i+1<mirrors.length)return attempt(i+1);throw e;});
+  }
+  return attempt(0);
+}
+function detectPlaces(lat,lon){
+  var box=document.getElementById("poiBox");
+  box.innerHTML='<div class="flavor">Reading the real places around you from OpenStreetMap data...</div>';
+  var q="[out:json][timeout:10];(node(around:450,"+lat+","+lon+")[amenity];node(around:450,"+lat+","+lon+")[shop];node(around:450,"+lat+","+lon+")[leisure];node(around:450,"+lat+","+lon+")[tourism];node(around:450,"+lat+","+lon+")[healthcare];node(around:450,"+lat+","+lon+")[aeroway];way(around:450,"+lat+","+lon+")[amenity];way(around:450,"+lat+","+lon+")[leisure];way(around:450,"+lat+","+lon+")[tourism];);out center 50;";
+  overpassQuery(q)
+  .then(function(r){if(!r.ok)throw new Error("overpass");return r.json();})
+  .then(function(data){
+    DETECTED={};var seen=[];
+    (data.elements||[]).forEach(function(el){
+      var t=el.tags||{},cat=catFromTags(t);if(!cat)return;
+      var la=el.lat||(el.center&&el.center.lat),lo=el.lon||(el.center&&el.center.lon);if(la==null)return;
+      var d=haversineM(lat,lon,la,lo);
+      var item={lat:la,lon:lo,name:t.name||"",dist:d};
+      if(!DETECTED[cat])DETECTED[cat]=[];
+      DETECTED[cat].push(item);
+      seen.push({cat:cat,name:item.name,dist:d});
+    });
+    Object.keys(DETECTED).forEach(function(k){DETECTED[k].sort(function(x,y){return x.dist-y.dist;});});
+    seen.sort(function(x,y){return x.dist-y.dist;});
+    if(!seen.length){box.innerHTML='<div class="flavor">OpenStreetMap shows no named places within 450 m, so the game keeps your picked place. Open areas still spawn the park and home crews.</div>';return;}
+    var strong=seen.filter(function(x){return x.cat!=="home"&&x.cat!=="office"})[0]||seen[0];
+    var pl=PLACES.filter(function(x){return x.id===strong.cat})[0];
+    var html='<div class="card" style="margin-top:12px"><b style="color:var(--navy)">Real places detected near you</b> <span class="small mut">(OpenStreetMap data, live)</span><div class="chips">';
+    var catsDone={};
+    seen.forEach(function(x){if(catsDone[x.cat])return;catsDone[x.cat]=1;var p=PLACES.filter(function(y){return y.id===x.cat})[0];if(!p)return;
+      html+='<button class="chip" type="button" data-poicat="'+x.cat+'">'+p.icon+" "+p.label+"<small>"+(x.name?x.name+" &middot; ":"")+x.dist+" m</small></button>";});
+    html+='</div><p class="small mut" style="margin-top:8px">The game set your turf to <b>'+(pl?pl.label:strong.cat)+'</b> from the nearest strong signal. Tap any detected place to hunt there instead, or keep your own pick above. Wild agents now stand at these real places on the map when they match.</p></div>';
+    box.innerHTML=html;
+    Array.prototype.forEach.call(box.querySelectorAll("[data-poicat]"),function(b){b.addEventListener("click",function(){S.place=b.dataset.poicat;save();syncPlaces();toast("Hunting turf set to "+(PLACES.filter(function(y){return y.id===S.place})[0]||{}).label+". Scan when ready.");});});
+    if(pl){S.place=pl.id;save();syncPlaces();}
+    toast("Real places read: your turf is "+(pl?pl.label:strong.cat)+".");
+  })
+  .catch(function(){box.innerHTML='<div class="flavor">Place detection could not reach OpenStreetMap just now, so the game keeps your picked place. Nothing is blocked: pick a place above and play on.</div>';});
+}
 function toast(msg){var t=document.getElementById("toast");t.textContent=msg;t.classList.add("show");setTimeout(function(){t.classList.remove("show");},3400);}
 /* ============ PLACES + SPAWNS ============ */
 var placeChips=document.getElementById("placeChips");
@@ -467,7 +605,11 @@ document.getElementById("geoBtn").addEventListener("click",function(){
   if(!navigator.geolocation){out.textContent=" Geolocation is not available on this device.";return;}
   out.textContent=" Locating...";
   navigator.geolocation.getCurrentPosition(function(pos){
-    out.textContent=" You are at "+pos.coords.latitude.toFixed(3)+", "+pos.coords.longitude.toFixed(3)+". Real coordinates, v1 promise kept. Place category still comes from your pick above until the native map lands.";
+    var la=pos.coords.latitude,lo=pos.coords.longitude;
+    playerPos=[la,lo];mapCenter=[la,lo];
+    out.textContent=" You are at "+la.toFixed(3)+", "+lo.toFixed(3)+". The map moved to you, and the game is reading the real places around you.";
+    if(MAP){MAP.setView(playerPos,16);if(PLAYER)PLAYER.setLatLng(playerPos);}
+    detectPlaces(la,lo);
   },function(){out.textContent=" Location permission was not granted. No problem: pick your place above and play on.";},{timeout:9000});
 });
 function rollRarity(){var r=Math.random()*100,acc=0;for(var i=0;i<RARITY_ROLL.length;i++){acc+=RARITY_ROLL[i][1];if(r<acc)return RARITY_ROLL[i][0];}return "Common";}
@@ -489,6 +631,7 @@ document.getElementById("scanBtn").addEventListener("click",function(){
   var n=3+S.rangeBonus;
   wildNow=[];for(var s=0;s<n;s++)wildNow.push(spawnOne());
   if(S.beaconFor){var ba=agentById(S.beaconFor);if(ba){wildNow[0]={agent:ba,rarity:rollRarity()};toast("Your beacon hums: a "+ba.name+" was drawn to you.");}S.beaconFor=null;save();syncBeacon();}
+  if(MAP){renderMapSpawns();document.getElementById("scanNote").textContent="Scan complete. Wild agents are standing on the map, near the places they belong. Tap one, or use the Nearby panel.";return;}
   var radar=document.getElementById("radar");
   Array.prototype.slice.call(radar.querySelectorAll(".wild")).forEach(function(n){n.remove();});
   document.getElementById("radarEmpty").style.display="none";
@@ -503,6 +646,34 @@ document.getElementById("scanBtn").addEventListener("click",function(){
   });
   document.getElementById("scanNote").textContent="Scan complete. Tap a wild agent to try to collect it before it wanders off.";
 });
+function spawnLatLng(agent){
+  var base=playerPos||mapCenter;
+  for(var p=0;p<agent.places.length;p++){var pois=DETECTED[agent.places[p]];if(pois&&pois.length){var poi=pois[0];return {ll:[poi.lat+(Math.random()-.5)*0.0006,poi.lon+(Math.random()-.5)*0.0006],dist:poi.dist,at:poi.name||agent.places[p]};}}
+  var ang=Math.random()*Math.PI*2,dd=0.0008+Math.random()*0.0018;
+  var ll=[base[0]+Math.cos(ang)*dd,base[1]+Math.sin(ang)*dd*1.35];
+  return {ll:ll,dist:haversineM(base[0],base[1],ll[0],ll[1]),at:""};
+}
+function renderMapSpawns(){
+  spawnMarkers.forEach(function(m){MAP.removeLayer(m);});spawnMarkers=[];
+  wildNow.forEach(function(w,i){
+    if(!w)return;
+    var pos=spawnLatLng(w.agent);w.dist=pos.dist;w.at=pos.at;
+    var icon=L.divIcon({className:"wildicon",html:'<div class="pin">'+museFig(w.agent,58)+'</div><div class="pulse"></div><div class="nm">'+w.agent.name+'</div>',iconSize:[86,104],iconAnchor:[43,88]});
+    var mk=L.marker(pos.ll,{icon:icon}).addTo(MAP);
+    (function(idx){mk.on("click",function(){openEncounter(idx);});})(i);
+    spawnMarkers.push(mk);
+  });
+  renderNearby();
+}
+function renderNearby(){
+  var p=document.getElementById("nearbyPanel");
+  var rows=wildNow.map(function(w,i){return {w:w,i:i};}).filter(function(x){return x.w;});
+  if(!rows.length){p.innerHTML="<b>Nearby</b><div class='nempty'>Nothing near right now. Scan again.</div>";return;}
+  p.innerHTML="<b>Nearby</b>"+rows.map(function(x){
+    return '<button class="nrow" type="button" data-near="'+x.i+'"><span class="fig">'+museFig(x.w.agent,26)+'</span><span>'+x.w.agent.name+'<small>'+x.w.rarity+(x.w.dist!=null?" &middot; ~"+x.w.dist+" m":"")+(x.w.at?" &middot; at "+x.w.at:"")+'</small></span></button>';
+  }).join("");
+  Array.prototype.forEach.call(p.querySelectorAll("[data-near]"),function(b){b.addEventListener("click",function(){openEncounter(+b.dataset.near);});});
+}
 /* ============ ENCOUNTER ============ */
 var enc={idx:-1,orbs:3,done:false,infoOnly:false};
 function turfNames(a){return a.places.map(function(pid){var pl=PLACES.filter(function(x){return x.id===pid})[0];return pl?pl.label:pid;}).join(" and ");}
@@ -528,6 +699,8 @@ function openEncounter(i){
   fillAgentInfo(w.agent);
   document.getElementById("encMsg").textContent="It watches you with its amber core glowing. Throw an orb?";
   var tb=document.getElementById("throwBtn");tb.style.display="";tb.disabled=false;
+  document.querySelector(".throwlbl").style.display="";
+  document.querySelector(".catchzone").style.background="";
   document.getElementById("orbRow").style.display="";
   document.getElementById("fleeBtn").textContent="Walk away";
   drawOrbs();
@@ -542,6 +715,7 @@ function openProfile(a){
   fillAgentInfo(a);
   document.getElementById("encMsg").textContent=S.caught[a.id]?"This agent is in your crew. Run its tasks in My Crew below.":"Not collected yet. Scan on its home turf for the best odds.";
   document.getElementById("throwBtn").style.display="none";
+  document.querySelector(".throwlbl").style.display="none";
   document.getElementById("orbRow").style.display="none";
   document.getElementById("fleeBtn").textContent="Close";
   document.getElementById("encModal").classList.add("open");
@@ -555,6 +729,7 @@ document.getElementById("throwBtn").addEventListener("click",function(){
   if(enc.done||enc.orbs<=0)return;
   var w=wildNow[enc.idx];
   if(rosterCount()>=rosterCapacity()){document.getElementById("encMsg").textContent="Your roster is full ("+rosterCapacity()+" agents). Expand storage in the Shop before collecting more.";return;}
+  var box=document.getElementById("encBox");box.classList.remove("shake");void box.offsetWidth;box.classList.add("shake");
   enc.orbs--;drawOrbs();
   var msg=document.getElementById("encMsg");
   if(Math.random()<CATCH[w.rarity]){
@@ -565,6 +740,8 @@ document.getElementById("throwBtn").addEventListener("click",function(){
     S.embers+=emberGain;
     if(c){c.count++;c.xp+=Math.round(bonusXp/2);msg.textContent="Already in your crew, so this "+w.agent.name+" shares its field notes instead: +"+Math.round(bonusXp/2)+" mastery XP for your "+w.agent.name+", and +"+emberGain+" Embers.";}
     else{S.caught[w.agent.id]={count:1,xp:bonusXp};msg.textContent="Collected! The "+w.agent.name+" joins your crew with "+bonusXp+" XP and +"+emberGain+" Embers. Find it in My Crew and put it to work.";}
+    if(MAP&&spawnMarkers[enc.idx]){MAP.removeLayer(spawnMarkers[enc.idx]);spawnMarkers[enc.idx]=null;}
+    wildNow[enc.idx]=null;renderNearby();
     save();renderAll();
     toast(w.agent.name+" collected. Your crew grows.");
     setTimeout(function(){document.getElementById("encModal").classList.remove("open");},2100);
@@ -662,6 +839,13 @@ function renderStats(){
   document.getElementById("stSpecies").textContent=ids.length+" / "+AGENTS.length;
   document.getElementById("stTasks").textContent=S.tasksRun;
   document.getElementById("stXp").textContent=totalXp();
+  var tx=totalXp(),tl=levelFor(tx),tnx=nextLevel(tx);
+  document.getElementById("trainerFig").innerHTML=museFig({name:"Explorer",accent:"#f5a623",prop:""},40);
+  document.getElementById("trainerMeta").textContent="Level "+tl.n+" · "+tx+" XP · "+ids.length+" species";
+  document.getElementById("trainerXp").style.width=(tnx?Math.round(100*(tx-LEVELS[tl.n-1].xp)/(tnx.xp-LEVELS[tl.n-1].xp)):100)+"%";
+  var buddy=ids.length?agentById(ids[0]):null;
+  document.getElementById("buddyFig").innerHTML=museFig(buddy||{name:"None",accent:"#8a93a6",prop:""},34);
+  document.getElementById("buddyName").textContent=buddy?("Buddy: "+buddy.name+" · L"+levelFor(S.caught[buddy.id].xp).n):"Buddy: none yet";
 }
 /* ============ SHOP + ECONOMY (simulated in v1) ============ */
 var SHOP=[
@@ -671,7 +855,7 @@ var SHOP=[
  {id:"range",name:"Map Range Extender",desc:"Every scan reveals one more wild agent, permanently (stacks twice).",embers:400,coins:150,can:function(){return S.rangeBonus<2;},buy:function(){S.rangeBonus++;}},
  {id:"sunset",name:"Golden Hour Scene",desc:"A cosmetic sunset skin for your radar map. Pure style, zero power. That is the point of cosmetics.",embers:300,coins:90,can:function(){return !S.sunset;},buy:function(){S.sunset=true;applyScene();}}
 ];
-function applyScene(){var r=document.getElementById("radar");if(S.sunset)r.style.background="radial-gradient(circle at 50% 50%,#7a4a21 0%,#3d2c14 55%,#241a08 100%)";}
+function applyScene(){var r=document.getElementById("radar");if(S.sunset){r.style.background="radial-gradient(circle at 50% 50%,#7a4a21 0%,#3d2c14 55%,#241a08 100%)";var m=document.getElementById("map");if(m)m.style.filter="sepia(.45) hue-rotate(-12deg) saturate(1.25)";}}
 function renderShop(){
   document.getElementById("walletLine").textContent=S.embers+" Embers · "+S.coins+" Muse Coins";
   document.getElementById("invLine").textContent="· Beacons: "+S.beacons+" · Roster: "+rosterCount()+"/"+rosterCapacity()+(S.boostTasks>0?" · XP Boost active ("+S.boostTasks+" runs)":"")+(S.rangeBonus>0?" · Range +"+S.rangeBonus:"");
@@ -728,7 +912,10 @@ function renderMatrix(){
 function renderAll(){renderDex();renderCrew();renderReceipts();renderStats();renderShop();}
 document.getElementById("logoFig").innerHTML=museFig({name:"Muse",accent:"#f5a623",prop:""},34);
 document.getElementById("youFig").innerHTML=museFig({name:"You",accent:"#2bb3a3",prop:""},52);
-syncPlaces();renderMatrix();renderAll();applyScene();
+document.getElementById("recenterBtn").addEventListener("click",function(){if(MAP)MAP.setView(playerPos||mapCenter,16);});
+document.getElementById("trainerCard").addEventListener("click",function(){document.getElementById("menuPop").classList.toggle("open");});
+Array.prototype.forEach.call(document.querySelectorAll("#menuPop a"),function(a){a.addEventListener("click",function(){document.getElementById("menuPop").classList.remove("open");});});
+syncPlaces();renderMatrix();renderAll();applyScene();initMap();
 </script>
 </body>
 </html>
