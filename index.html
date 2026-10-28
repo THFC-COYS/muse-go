@@ -156,7 +156,7 @@ footer b{color:var(--cream)}
   <p class="sub">Tell the game where you are, or share your location, then scan. Agents spawn weighted by place: the closer a place matches an agent's home turf, the more likely it appears, and the rarer the turf, the rarer the agent.</p>
   <div class="stats">
     <div class="stat"><b id="stCaught">0</b><span>Agents collected</span></div>
-    <div class="stat"><b id="stSpecies">0 / 12</b><span>Dex species</span></div>
+    <div class="stat"><b id="stSpecies">0 / 14</b><span>Dex species</span></div>
     <div class="stat"><b id="stTasks">0</b><span>Real tasks run</span></div>
     <div class="stat"><b id="stXp">0</b><span>Total mastery XP</span></div>
     <div class="stat"><b id="stSparks">0</b><span>Embers (earned)</span></div>
@@ -179,7 +179,7 @@ footer b{color:var(--cream)}
 
 <section id="dex">
   <h2 class="sec">2. The Agent Dex</h2>
-  <p class="sub">Twelve launch species. Every one wears the Muse family look, the navy figure with the glowing amber core, dressed for its profession so you can read it at a glance. Greyed out means not yet collected. Tap any card, or any wild agent on the radar, to see its full profile: the tasks it can accomplish for you, what each mastery level unlocks, and where it lives.</p>
+  <p class="sub">Fourteen launch species. Every one wears the Muse family look, the navy figure with the glowing amber core, dressed for its profession so you can read it at a glance. Greyed out means not yet collected. Tap any card, or any wild agent on the radar, to see its full profile: the tasks it can accomplish for you, what each mastery level unlocks, and where it lives.</p>
   <div class="dexgrid" id="dexGrid"></div>
 </section>
 
@@ -263,7 +263,7 @@ footer b{color:var(--cream)}
 <section id="native">
   <h2 class="sec">From web proof to native app</h2>
   <div class="grid2" style="margin-top:16px">
-    <div class="card"><b style="color:var(--navy)">Real in this v1</b><p class="small" style="margin-top:6px">Real device geolocation (with your permission), the full place weighted spawn engine, rarity and catch math, the 12 species Dex, mastery XP and levels, task runs with receipts, your collection saved on this device, and a copy ready Muse brief for every agent you own.</p></div>
+    <div class="card"><b style="color:var(--navy)">Real in this v1</b><p class="small" style="margin-top:6px">Real device geolocation (with your permission), the full place weighted spawn engine, rarity and catch math, the 14 species Dex, mastery XP and levels, task runs with receipts, your collection saved on this device, and a copy ready Muse brief for every agent you own.</p></div>
     <div class="card"><b style="color:var(--navy)">Stubbed or simulated in v1</b><p class="small" style="margin-top:6px">You declare the place category yourself (the native app reads real place types from the map). Task outputs are simulated in game; the exported brief is what makes the agent real inside your own Muse. No accounts, no server, no background tracking.</p></div>
     <div class="card"><b style="color:var(--navy)">Native v2 (iOS + Android, one codebase)</b><p class="small" style="margin-top:6px">React Native + Expo in TypeScript (the web build's catalog, spawn tables, and progression logic carry over as shared modules), a real map with live place categories (Google Places primary, OpenStreetMap fallback; the web prototype can read OpenStreetMap place tags), accounts with server checked spawns, alerts when a rare agent is near, optional camera AR encounters with a fully playable non AR mode, walking friendly spawn points vetted as public, and team collections. One codebase, both stores. One more honest web limit: clearing this browser's data erases a web collection; accounts fix that in v2.</p></div>
     <div class="card"><b style="color:var(--navy)">Muse integration, honestly</b><p class="small" style="margin-top:6px">Today the bridge is the brief: collect an agent, copy its WHO / WHAT / WHERE YOU STAY IN CHARGE brief into Muse, and it works there. A one tap "send to my Muse" needs a Muse provisioning API that does not exist yet; when it lands, the Dex becomes the front door to your whole crew.</p></div>
@@ -317,6 +317,7 @@ var PLACES=[
  {id:"bank",label:"Bank / Finance",icon:"🏦",flavor:"Serious money turf. Bankers appear in business hours."},
  {id:"museum",label:"Museum / Gallery",icon:"🏛️",flavor:"Culture concentrates here. Artists and Scientists hold the floor."},
  {id:"hardware",label:"Hardware / Works Yard",icon:"🪚",flavor:"Sawdust and steel. Builders run the yard."},
+ {id:"worship",label:"Place of Worship",icon:"⛪",flavor:"Meaning and momentum live here. Chaplains hold this ground, and Motivators draw a crowd."},
  {id:"office",label:"Office / Downtown",icon:"🏢",flavor:"Everyone passes through downtown. A mixed, busy spawn pool."},
  {id:"home",label:"Home / Neighborhood",icon:"🏠",flavor:"Home turf is quiet. Helpers wander by; the wildest agents rarely do."}
 ];
@@ -389,7 +390,17 @@ var AGENTS=[
   tasks:[["Scope my project","Steps, materials, and the honest difficulty rating.",1,25],
          ["Build my project plan","Sequenced plan with a materials list and tool checks.",3,45],
          ["Run my project book","Tracks home projects end to end with receipts and photos logged.",4,60]],
-  brief:{who:"a practical builder who scopes honestly and sequences like a pro",what:"scope DIY projects, build sequenced plans with materials lists, and track progress with receipts",never:"never wave through electrical, gas, or structural work without a licensed pro, and never order materials without approval"}}
+  brief:{who:"a practical builder who scopes honestly and sequences like a pro",what:"scope DIY projects, build sequenced plans with materials lists, and track progress with receipts",never:"never wave through electrical, gas, or structural work without a licensed pro, and never order materials without approval"}},
+ {id:"chaplain",name:"Chaplain",prop:"🕊️",accent:"#7a5fa0",rarityBase:"Rare",places:["worship","hospital"],blurb:"Meaning, steadiness, and a quiet room in a loud world.",
+  tasks:[["Offer a moment of reflection","A short reading, one honest question, and quiet structure for a hard or holy moment.",1,25],
+         ["Plan my service or ceremony","Order, readings, music, and roles for a service, wedding, or memorial, drafted with care.",3,45],
+         ["Run my rhythm of care","A standing practice: weekly reflection, gratitude and grief check ins, and community care reminders.",5,70]],
+  brief:{who:"a gentle, steady chaplain who meets people where they are and carries confidences carefully",what:"offer reflection and comfort, help plan services and ceremonies, and keep a rhythm of gratitude, grief, and community care",never:"never preach at the owner, never assume a faith tradition, and never repeat a confidence anywhere"}},
+ {id:"motivator",name:"Motivator",prop:"📣",accent:"#ff7847",rarityBase:"Uncommon",places:["worship","gym","school"],blurb:"Momentum, bottled. Honest fire, no fake hype.",
+  tasks:[["Give me today's spark","One honest encouragement and a check in question, tuned to what you are actually working on.",1,25],
+         ["Coach my week","Breaks a big goal into this week's moves and tracks the streaks with you.",3,45],
+         ["Run my accountability system","Morning brief, midweek honest mirror, and a Friday receipt of promised versus done.",5,70]],
+  brief:{who:"a warm, direct motivator whose encouragement is always earned by the facts",what:"give a daily spark tuned to real goals, coach weekly moves toward them, and run an accountability rhythm with an honest Friday receipt",never:"never shame, never fake hype, and never move a goalpost the owner set without asking"}}
 ];
 /* ============ MUSE FIGURE (family look: navy body, amber core) ============ */
 function museFig(a,size){

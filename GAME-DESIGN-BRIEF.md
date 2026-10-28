@@ -33,7 +33,7 @@ Candidates: (1) Muse GO, (2) Agent Safari, (3) Wild Agents, (4) The Agent Atlas,
 - Public places only: spawns anchor to public, pedestrian accessible places. Never private homes, roadways, or memorials. Players can flag and permanently suppress a spawn location.
 - Fully playable seated: list view for every flow, large tap targets, screen reader labels with distance and place ("Doctor agent, 200 feet, at Urgent Care"), high contrast mode, and a widened radius "Play from here" mode. Nothing is gated behind walking speed or distance streaks.
 
-## Launch roster (12 species)
+## Launch roster (14 species)
 
 Every agent wears the Muse family look: rounded navy figure, glowing amber core, with per profession attire, props, and accent color so it reads instantly.
 
@@ -51,10 +51,14 @@ Every agent wears the Muse family look: rounded navy figure, glowing amber core,
 | Banker | Bank, finance office, downtown | Rare | Statement explanations, budget reviews, money watch |
 | Gardener | Park, garden center, market, home | Common | Planting plans, care calendars, seasonal garden years |
 | Builder | Hardware store, works yard, auto shop | Uncommon | Project scoping, sequenced build plans, project book |
+| Chaplain | Place of worship, hospital, clinic | Rare | Reflection and comfort, service and ceremony planning, rhythm of care |
+| Motivator | Place of worship, gym, school | Uncommon | Daily spark, weekly goal coaching, accountability system |
+
+Added 2026-10-28 at Greg's direction, live from his seat in a Greenwich church on the university campus: the Place of Worship place category, the Chaplain (meaning and care), and the Motivator (momentum; home turf worship, gym, school, with a dawn surge). That makes a church on a campus one of the richest hunting grounds in the game: Chaplain, Motivator, Teacher, and Artist can all spawn there.
 
 Task unlock matrix (full version lives in the game): each agent carries three signature tasks that unlock at mastery L1, L3 to L4, and L5. Example, the Chef: L1 "Plan tonight's dinner," L3 "Build my week of meals," L5 "Run my kitchen system" on a standing weekly rhythm.
 
-The roster also groups into profession families, which the Dex tracks: **Care** (Doctor, Nurse), **Food** (Chef), **Knowledge** (Teacher, Scientist), **Trades** (Mechanic, Builder, Gardener), **Travel** (Pilot, Trainer), **Commerce and Culture** (Banker, Artist).
+The roster also groups into profession families, which the Dex tracks: **Care** (Doctor, Nurse), **Food** (Chef), **Knowledge** (Teacher, Scientist), **Trades** (Mechanic, Builder, Gardener), **Travel** (Pilot, Trainer), **Commerce and Culture** (Banker, Artist), **Spirit** (Chaplain, Motivator).
 
 ## Spawn system
 
@@ -122,4 +126,4 @@ Today's honest bridge is the brief: every collected agent exports a copy ready M
 
 ## What is real vs stubbed in v1
 
-Real: geolocation, spawn weighting and rarity math, catch encounters, the 12 species Dex, mastery XP and levels, receipts, persistence, brief export. Simulated: place category detection (player declared) and in game task outputs. Not claimed: accounts, servers, background location, push alerts, AR. Those are v2.
+Real: geolocation, spawn weighting and rarity math, catch encounters, the 14 species Dex, mastery XP and levels, receipts, persistence, brief export. Simulated: place category detection (player declared) and in game task outputs. Not claimed: accounts, servers, background location, push alerts, AR. Those are v2.

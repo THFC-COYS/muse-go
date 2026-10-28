@@ -6,7 +6,7 @@ A Pokemon GO style collection game for Muse agents. Explore the real world, coll
 
 Live: https://muse-go.vercel.app
 
-v1 is a playable web proof: real device geolocation, the full place weighted spawn engine (6x home turf weighting), rarity tiers (Common 52 / Uncommon 27 / Rare 13 / Epic 6 / Legendary 2), orb based encounters, a 12 species Agent Dex, mastery levels L1 Novice to L5 Master, task runs with receipts, localStorage persistence, and per agent Muse brief export.
+v1 is a playable web proof: real device geolocation, the full place weighted spawn engine (6x home turf weighting), rarity tiers (Common 52 / Uncommon 27 / Rare 13 / Epic 6 / Legendary 2), orb based encounters, a 14 species Agent Dex, mastery levels L1 Novice to L5 Master, task runs with receipts, localStorage persistence, and per agent Muse brief export.
 
 The economy runs in v1 too, fully simulated on device: Embers earned by catching, tasks, and a daily streak; Muse Coins via a clearly labeled test mint; a working shop (spawn beacons, roster storage, XP boosts, range extenders, a cosmetic scene) under Greg's guardrail that money accelerates but never buys mastery or trust. No loot boxes; spawn and catch odds are published in the game.
 

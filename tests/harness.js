@@ -5,12 +5,12 @@ let pass = 0, fail = 0;
 function ok(cond, label) { if (cond) { pass++; } else { fail++; console.log("FAIL: " + label); } }
 
 // Roster
-const agentIds = ["doctor","nurse","chef","teacher","scientist","mechanic","pilot","trainer","artist","banker","gardener","builder"];
+const agentIds = ["doctor","nurse","chef","teacher","scientist","mechanic","pilot","trainer","artist","banker","gardener","builder","chaplain","motivator"];
 agentIds.forEach(id => ok(html.includes('id:"' + id + '"'), "agent present: " + id));
 ok((html.match(/tasks:\[\[/g) || []).length >= 12, "every agent carries a task list");
 
 // Places
-["hospital","restaurant","school","gym","airport","autoshop","bank","park","museum","library"].forEach(p =>
+["hospital","restaurant","school","gym","airport","autoshop","bank","park","museum","library","worship"].forEach(p =>
   ok(html.includes('"' + p + '"'), "place category wired: " + p));
 
 // Spawn + rarity math
@@ -40,7 +40,7 @@ ok(html.includes("public places"), "public places rule present");
 // Family look
 ok(html.includes('fill="#16264e"'), "navy Muse figure present");
 ok(html.includes('fill="#f5a623"'), "amber core present");
-ok((html.match(/prop:"/g) || []).length >= 12, "every agent has a profession prop");
+ok((html.match(/prop:"/g) || []).length >= 14, "every agent has a profession prop");
 
 // Economy (Greg addendum 2026-10-28)
 ok(html.includes("Embers"), "soft currency named (Embers candidate)");
