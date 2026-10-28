@@ -147,6 +147,15 @@ ok(!html.includes("testCoinsBtn"), "unlabeled test mint removed");
 ok(html.includes("backupBtn") && html.includes("saveCodeBox"), "backup code export and restore present");
 ok(html.includes("privacy.html") && html.includes("terms.html") && html.includes("support.html"), "policy pages linked from the game");
 
+// Plush portraits (Greg, 2026-10-28: agents at the Muse icon's quality, pure outfits)
+ok(html.includes("var PORTRAITS="), "portrait pack inlined");
+["doctor","nurse","chef","teacher","scientist","mechanic","pilot","trainer","artist","banker","gardener","builder","chaplain","motivator"].forEach(function(id){
+  ok(html.includes('"'+id+'": "data:image/webp;base64,'), "portrait present for: " + id);
+});
+ok(html.includes("portraitFig"), "portrait renderer with vector fallback present");
+ok(html.includes("heroport"), "hero stage shows the plush portrait");
+ok(html.includes("port-round"), "round portrait chips for map markers and nearby");
+
 // Greg laws
 ok(!html.includes("—"), "no em dashes anywhere");
 ok(html.includes("localStorage"), "collection persists on device");
