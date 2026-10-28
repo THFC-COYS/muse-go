@@ -157,6 +157,46 @@ pre.brief{background:var(--navy);color:#e8edfb;border-radius:14px;padding:16px;f
 #throwBtn:disabled{opacity:.45}
 .throwlbl{font-size:11px;font-weight:800;letter-spacing:.08em;color:var(--navy);text-transform:uppercase;margin-top:5px}
 @media(max-width:640px){#map{height:460px}.nearby{width:160px;bottom:96px}.buddy{bottom:96px}}
+/* ===== TONIGHT'S FIVE (plus battle): cartoon juice ===== */
+.card{border:3px solid var(--navy)!important;box-shadow:7px 7px 0 rgba(16,28,61,.9)!important;border-radius:20px!important}
+.stat{border:3px solid var(--navy);box-shadow:5px 5px 0 rgba(16,28,61,.9);border-radius:18px}
+.btn{border:3px solid var(--navy)!important;box-shadow:4px 4px 0 rgba(16,28,61,.9);transition:transform .08s ease,box-shadow .08s ease}
+.btn:active{transform:translate(3px,3px) scale(.98);box-shadow:1px 1px 0 rgba(16,28,61,.9)}
+.chip{border:2.5px solid var(--navy);box-shadow:3px 3px 0 rgba(16,28,61,.85)}
+.dexcard{border:3px solid var(--navy)!important;box-shadow:6px 6px 0 rgba(16,28,61,.9)!important;transition:transform .12s ease}
+.dexcard:hover{transform:rotate(-1.2deg) scale(1.03)}
+.rarity{display:inline-block;transform:rotate(-2deg);border:2px solid var(--navy);box-shadow:2px 2px 0 rgba(16,28,61,.8)}
+.r-Epic{background:linear-gradient(100deg,#8b6fd8,#e4577a,#f5a623,#8b6fd8);background-size:300% 100%;animation:shimmer 3.2s linear infinite;color:#fff}
+.r-Legendary{background:linear-gradient(100deg,#f5a623,#ffd34d,#ff7847,#f5a623);background-size:300% 100%;animation:shimmer 2.6s linear infinite;color:var(--navy)}
+@keyframes shimmer{0%{background-position:0% 0}100%{background-position:300% 0}}
+h2.sec{text-shadow:3px 3px 0 rgba(245,166,35,.45)}
+.orbmain .ball{animation:orbglow 2.2s ease-in-out infinite}
+@keyframes orbglow{0%,100%{box-shadow:0 10px 24px rgba(16,28,61,.35),0 0 0 0 rgba(245,166,35,.55)}50%{box-shadow:0 10px 24px rgba(16,28,61,.35),0 0 0 16px rgba(245,166,35,0)}}
+.orbmain.ready .ball{animation:orbglow 1.3s ease-in-out infinite}
+.gatepulse{animation:gatepulse .7s ease 2}
+@keyframes gatepulse{0%,100%{transform:scale(1)}50%{transform:scale(1.025)}}
+.sweep{position:absolute;border-radius:50%;border:3px solid rgba(245,166,35,.85);pointer-events:none;animation:sweep 1.5s ease-out forwards;z-index:590}
+@keyframes sweep{0%{transform:scale(.06);opacity:1}100%{transform:scale(1);opacity:0}}
+.wildicon .pin{animation:bob 2.2s ease-in-out infinite,popin .45s cubic-bezier(.2,2.2,.4,1)}
+@keyframes popin{0%{transform:scale(0) rotate(-14deg)}100%{transform:scale(1) rotate(0)}}
+.confetti{position:fixed;width:11px;height:16px;z-index:200;border-radius:3px;pointer-events:none;animation:confettiFall linear forwards}
+@keyframes confettiFall{0%{transform:translateY(-4vh) rotate(0);opacity:1}100%{transform:translateY(102vh) rotate(720deg);opacity:.85}}
+.bigbanner{position:fixed;top:16%;left:50%;transform:translate(-50%,-50%) scale(0);z-index:210;background:linear-gradient(100deg,var(--amber),var(--gold));color:var(--navy);font-weight:900;font-size:clamp(22px,5.4vw,38px);letter-spacing:.03em;padding:16px 30px;border-radius:20px;border:4px solid var(--navy);box-shadow:8px 8px 0 rgba(16,28,61,.9);text-align:center;pointer-events:none}
+.bigbanner.pop{animation:bannerpop 2.4s cubic-bezier(.2,1.6,.4,1) forwards}
+@keyframes bannerpop{0%{transform:translate(-50%,-50%) scale(0) rotate(-6deg)}14%{transform:translate(-50%,-50%) scale(1.08) rotate(2deg)}22%{transform:translate(-50%,-50%) scale(1) rotate(0)}80%{opacity:1}100%{transform:translate(-50%,-50%) scale(1);opacity:0}}
+.bigbanner small{display:block;font-size:14px;font-weight:800;letter-spacing:.06em}
+.questbar{height:14px;background:#eee3cb;border:2.5px solid var(--navy);border-radius:99px;overflow:hidden}
+.questbar i{display:block;height:100%;background:linear-gradient(90deg,var(--teal),#58b368);transition:width .5s ease}
+.resolvebar{height:20px;background:#f3d9d9;border:3px solid var(--navy);border-radius:99px;overflow:hidden}
+.resolvebar i{display:block;height:100%;transition:width .6s cubic-bezier(.3,1.4,.4,1)}
+.resolvebar.mine i{background:linear-gradient(90deg,var(--teal),#58b368)}
+.resolvebar.wild i{background:linear-gradient(90deg,#e4577a,#ff7847)}
+.battlelog{background:rgba(16,28,61,.06);border-radius:12px;padding:10px 12px;font-size:13.5px;min-height:64px;text-align:left}
+.depoticon{background:none;border:none;text-align:center}
+.depoticon .disc{width:46px;height:46px;margin:0 auto;border-radius:50%;background:radial-gradient(circle at 34% 28%,#ffe9b8,var(--gold) 60%,#c97a08);border:3.5px solid var(--navy);display:flex;align-items:center;justify-content:center;font-size:22px;box-shadow:0 6px 14px rgba(16,28,61,.4);animation:depotspin 5s ease-in-out infinite}
+@keyframes depotspin{0%,100%{transform:rotate(-7deg)}50%{transform:rotate(7deg) scale(1.07)}}
+.depoticon .dnm{color:#fff;font-size:10px;font-weight:900;letter-spacing:.08em;text-shadow:0 1px 4px rgba(0,0,0,.8);margin-top:2px}
+.combo{display:inline-block;background:#ff7847;color:#fff;border:2.5px solid var(--navy);box-shadow:3px 3px 0 rgba(16,28,61,.85);border-radius:999px;padding:3px 12px;font-weight:900;transform:rotate(-2deg)}
 .toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--navy);color:var(--cream);padding:12px 20px;border-radius:999px;font-weight:600;font-size:14.5px;z-index:200;transition:transform .3s ease;box-shadow:var(--shadow);max-width:92vw;text-align:center}
 .toast.show{transform:translateX(-50%) translateY(0)}
 footer{margin-top:44px;background:var(--navy);color:#c6d2ee;border-radius:28px 28px 0 0}
@@ -200,7 +240,7 @@ footer b{color:var(--cream)}
 
 <section id="play">
   <h2 class="sec">1. Explore and collect</h2>
-  <p class="sub">Tell the game where you are, or share your location, then scan. Agents spawn weighted by place: the closer a place matches an agent's home turf, the more likely it appears, and the rarer the turf, the rarer the agent.</p>
+  <p class="sub">Muse GO runs on your real location, and only your real location. There is no place picker and no way to fake where you are standing: share your location, the game reads the actual places around you, and agents spawn weighted by that turf. A Doctor near a real hospital. A Chaplain inside a real church. That is the whole deal, and it cannot be hacked from the couch.</p>
   <div class="stats">
     <div class="stat"><b id="stCaught">0</b><span>Agents collected</span></div>
     <div class="stat"><b id="stSpecies">0 / 14</b><span>Dex species</span></div>
@@ -211,15 +251,20 @@ footer b{color:var(--cream)}
   </div>
 
   <div class="card" style="margin-top:16px">
-    <b style="color:var(--navy)">Where are you right now?</b>
-    <p class="small mut">In v1 you declare the place, and the spawn table does the rest. In the native app, real place categories come from the map itself. <button class="btn btn-soft btn-sm" id="geoBtn" type="button">Use my location</button> <span class="small" id="geoOut" aria-live="polite"></span></p>
-    <div class="chips" id="placeChips" role="group" aria-label="Choose your current place"></div>
-    <div class="flavor" id="flavorBox">Pick a place to see what tends to spawn there.</div>
+    <div id="locGate">
+      <b style="color:var(--navy);font-size:19px">📍 Location is the game</b>
+      <p class="small mut" style="margin-top:4px">No location, no spawns, no exceptions. Your device's GPS fixes where you are, the game reads the real places around that fix from OpenStreetMap data, and the wild agents answer to that ground truth alone. Nobody can pick a place, type a place, or spoof their way to an airport Pilot from their sofa.</p>
+      <div style="margin-top:10px;display:flex;gap:10px;flex-wrap:wrap;align-items:center">
+        <button class="btn btn-amber" id="geoBtn" type="button">📍 Turn on my location</button>
+        <span class="small" id="geoOut" aria-live="polite" style="font-weight:600;color:var(--navy)">Waiting for your location fix...</span>
+      </div>
+    </div>
+    <div class="flavor" id="flavorBox" style="margin-top:12px">Your turf appears here once your location is fixed and the real places around you are read.</div>
     <div class="mapstage" id="mapStage">
       <div id="map" role="application" aria-label="Live map of your surroundings with wild agents"></div>
       <button class="ovl trainer" id="trainerCard" type="button" aria-label="Your explorer profile">
         <span class="fig" id="trainerFig"></span>
-        <span><b>Explorer</b><span class="xpmini"><i id="trainerXp" style="width:0%"></i></span><small id="trainerMeta">Level 1 &middot; 0 XP</small></span>
+        <span><b>Explorer</b><span class="xpmini"><i id="trainerXp" style="width:0%"></i></span><small id="trainerMeta">Level 1 &middot; 0 XP</small> <span class="combo" id="comboBadge" style="display:none"></span></span>
       </button>
       <button class="ovl recenter" id="recenterBtn" type="button" aria-label="Re center the map on me">◎</button>
       <div class="ovl buddy" id="buddyChip"><span class="fig" id="buddyFig"></span><span id="buddyName">Buddy: none yet</span></div>
@@ -237,9 +282,19 @@ footer b{color:var(--cream)}
   </div>
 </section>
 
+<section id="quests">
+  <h2 class="sec">Today's Quests</h2>
+  <p class="sub">Three fresh quests every day. Finish them by actually playing: catching, working, exploring your real neighborhood. Claim the Embers when the bar fills.</p>
+  <div class="grid3" id="questGrid" style="margin-top:14px"></div>
+  <div class="card" style="margin-top:16px" id="fortCard">
+    <b style="color:var(--navy)">🛡️ Your Fort</b>
+    <div id="fortBody" class="small" style="margin-top:6px">No agent stationed. Open a Depot on the map (a real landmark near you) and station your strongest agent there: it holds the ground, earns mastery XP and Embers while you are away, and comes home stronger when you recall it. A stationed agent cannot run tasks until recalled, and only one agent can hold a fort at a time.</div>
+  </div>
+</section>
+
 <section id="dex">
   <h2 class="sec">2. The Agent Dex</h2>
-  <p class="sub">Fourteen launch species. Every one wears the Muse family look, the navy figure with the glowing amber core, dressed for its profession so you can read it at a glance. Greyed out means not yet collected. Tap any card, or any wild agent on the radar, to see its full profile: the tasks it can accomplish for you, what each mastery level unlocks, and where it lives.</p>
+  <p class="sub">Fourteen launch species. Every one wears the Muse family look, the navy figure with the glowing amber core, dressed for its profession so you can read it at a glance. Greyed out means not yet collected. Tap any card, or any wild agent on the map, to see its full profile: the tasks it can accomplish for you, what each mastery level unlocks, and where it lives.</p>
   <div class="dexgrid" id="dexGrid"></div>
 </section>
 
@@ -299,9 +354,9 @@ footer b{color:var(--cream)}
       <tr><td><span class="rarity r-Common">Common</span></td><td>52%</td><td>85%</td></tr>
       <tr><td><span class="rarity r-Uncommon">Uncommon</span></td><td>27%</td><td>70%</td></tr>
       <tr><td><span class="rarity r-Rare">Rare</span></td><td>13%</td><td>52%</td></tr>
-      <tr><td><span class="rarity r-Epic">Epic</span></td><td>6%</td><td>36%</td></tr>
-      <tr><td><span class="rarity r-Legendary">Legendary</span></td><td>2%</td><td>22%</td></tr></table>
-      <p class="small mut" style="margin-top:10px">Place weighting multiplies a species' base rate on its home turf (about 6x at a matching place, still possible elsewhere at a trickle). Time of day adds flavor: Chefs surge at meal times, Pilots at flight banks, Trainers at dawn and dusk. You get 3 Muse Orbs per encounter; a wild agent can break free and flee.</p>
+      <tr><td><span class="rarity r-Epic">Epic</span></td><td>6%</td><td>⚔️ Master Trial</td></tr>
+      <tr><td><span class="rarity r-Legendary">Legendary</span></td><td>2%</td><td>⚔️ Master Trial</td></tr></table>
+      <p class="small mut" style="margin-top:10px">Place weighting multiplies a species' base rate on its home turf (about 6x where its real places surround you, still possible elsewhere at a trickle), and the turf is read from your actual GPS position and the mapped places near it. There is no manual override, ever. Time of day adds flavor: Chefs surge at meal times, Pilots at flight banks, Trainers at dawn and dusk. You get 3 Muse Orbs per ordinary encounter; a wild agent can break free and flee. <b>Epic and Legendary spawns are Masters:</b> orbs do not work on them. Your champion must beat them in a Trial of Work (below), and landmarks near you double as <b>Agent Depots</b> where you spin for supplies and station your strongest agent to hold a fort.</p>
     </div>
   </div>
   <div class="card" style="margin-top:16px">
@@ -314,6 +369,10 @@ footer b{color:var(--cream)}
     <div class="card"><b style="color:var(--navy)">Name candidates (Greg's pick)</b><p class="small" style="margin-top:6px">1. <b>Muse GO</b> (this build's working title)<br>2. <b>Agent Safari</b><br>3. <b>Wild Agents</b><br>4. <b>The Agent Atlas</b><br>5. <b>Catch a Muse</b></p></div>
   </div>
   <div class="card" style="margin-top:16px">
+    <b style="color:var(--navy)">⚔️ Master Trials and 🛡️ Forts (the battle system)</b>
+    <p class="small" style="margin-top:6px"><b>Trials:</b> Epic and Legendary wilds are Master agents and cannot be caught with orbs. You nominate a champion from your crew; its unlocked real tasks are its moves (power = task XP), and its Resolve is 40 + 12 per mastery level. The Master answers with signature work of its own. Family matchups matter (Care outplays Spirit, Spirit outplays Knowledge, Knowledge outplays Trades, Trades outplays Commerce, Commerce outplays Travel, Travel outplays Food, Food outplays Care), and a champion on its home turf hits 10% harder. Win and the Master joins you, the only way Masters are ever earned. Lose and it returns to the wild while your champion banks +10 training XP: standing in is never wasted. <b>Forts:</b> named real places on your map are Agent Depots. Walk within 100 m to spin for supplies (Embers, beacons, XP charges, Focus Snacks), and station your strongest agent there to hold the fort: it earns +8 mastery XP and +5 Embers per hour (capped at 8 hours per stint) while you explore, but it cannot run tasks until recalled. One fort at a time. Both systems run on the same law as everything else here: real location, real work, receipts for everything.</p>
+  </div>
+  <div class="card" style="margin-top:16px">
     <b style="color:var(--navy)">The economy, designed honestly</b>
     <p class="small" style="margin-top:6px"><b>Earn (Embers):</b> catch an agent +20 (rarity bonus up to +100), run a real task +15, rate a task genuinely useful +10, daily streak +50. <b>Spend:</b> beacons, storage, boosts, and cosmetics are the sinks, tuned so a free player earns a beacon roughly every two days of real play. <b>Premium (Muse Coins):</b> the same shop accepts Coins for players who would rather accelerate, plus Coin only cosmetics and the Season Pass. <b>Beyond currency:</b> sponsored locations (a cafe or clinic pays to be a spawn hotspot, always labeled "Sponsored"), the Pro tier, and cosmetic bundles. <b>The funnel, plainly:</b> a free player gets every species, every mastery level, and every real task, forever. Paying buys speed, space, and style. It never buys mastery XP outright, never raises an agent's autonomy tier, and never skips an approval gate. No gambling mechanics: where chance exists (wild spawns), the odds are published in the design section of this page. Family safe, regulator clean, prices in plain language.</p>
     <p class="small" style="margin-top:8px"><b>Currency name candidates (Greg's pick):</b> soft: Embers (this build), Sparks, Glow Drops. Premium: Muse Coins (this build), Core Coins, Aurics.</p>
@@ -324,7 +383,7 @@ footer b{color:var(--cream)}
   <h2 class="sec">From web proof to native app</h2>
   <div class="grid2" style="margin-top:16px">
     <div class="card"><b style="color:var(--navy)">Real in this v1</b><p class="small" style="margin-top:6px">Real device geolocation (with your permission), the full place weighted spawn engine, rarity and catch math, the 14 species Dex, mastery XP and levels, task runs with receipts, your collection saved on this device, and a copy ready Muse brief for every agent you own.</p></div>
-    <div class="card"><b style="color:var(--navy)">Stubbed or simulated in v1</b><p class="small" style="margin-top:6px">Place detection is real but young: with location shared, the game reads actual OpenStreetMap places around you and sets your turf from them (Google Places is the production upgrade, and it needs an API key). You can always override with your own pick. Task outputs are simulated in game; the exported brief is what makes the agent real inside your own Muse. No accounts, no server, no background tracking.</p></div>
+    <div class="card"><b style="color:var(--navy)">Stubbed or simulated in v1</b><p class="small" style="margin-top:6px">Place detection is real and now mandatory in spirit: the game runs on device location alone, reads actual OpenStreetMap places around your GPS fix, and sets turf and depots from them (Google Places is the production upgrade, and it needs an API key). There is deliberately no manual place picker and no override: that is Greg's anti couch-surfing rule. Task outputs are simulated in game; the exported brief is what makes the agent real inside your own Muse. No accounts, no server, no background tracking.</p></div>
     <div class="card"><b style="color:var(--navy)">Native v2 (iOS + Android, one codebase)</b><p class="small" style="margin-top:6px">React Native + Expo in TypeScript (the web build's catalog, spawn tables, and progression logic carry over as shared modules), a real map with live place categories (Google Places primary, OpenStreetMap fallback; the web prototype can read OpenStreetMap place tags), accounts with server checked spawns, alerts when a rare agent is near, optional camera AR encounters with a fully playable non AR mode, walking friendly spawn points vetted as public, and team collections. One codebase, both stores. One more honest web limit: clearing this browser's data erases a web collection; accounts fix that in v2.</p></div>
     <div class="card"><b style="color:var(--navy)">Muse integration, honestly</b><p class="small" style="margin-top:6px">Today the bridge is the brief: collect an agent, copy its WHO / WHAT / WHERE YOU STAY IN CHARGE brief into Muse, and it works there. A one tap "send to my Muse" needs a Muse provisioning API that does not exist yet; when it lands, the Dex becomes the front door to your whole crew.</p></div>
   </div>
@@ -351,15 +410,48 @@ footer b{color:var(--cream)}
     </div>
     <div class="orbrow" id="orbRow"></div>
     <p class="small" id="encMsg" aria-live="polite" style="min-height:22px;font-weight:600;color:var(--navy)"></p>
+    <div id="battlePanel" style="display:none;text-align:left;margin-top:10px">
+      <b class="small" style="color:#b0324a;letter-spacing:.05em">⚔️ MASTER TRIAL: ORBS WILL NOT HOLD THIS ONE</b>
+      <p class="small mut" style="margin-top:4px">Epic and Legendary wilds are Master agents. To win one over, your champion must beat it in a Trial of Work: three exchanges where your agents' real tasks are the moves. Pick your champion wisely: home turf and family matchups matter.</p>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px;align-items:center">
+        <select id="champSel" aria-label="Choose your champion" style="flex:1;min-width:180px;padding:10px;border:3px solid var(--navy);border-radius:12px;font:inherit;font-weight:700;color:var(--navy);background:#fffdf6"></select>
+        <button class="btn btn-amber btn-sm" id="trialBtn" type="button">⚔️ Begin the Trial</button>
+      </div>
+      <div id="battleZone" style="display:none;margin-top:12px">
+        <div class="small" style="font-weight:800;color:var(--navy)"><span id="bMineName">Your champion</span> <span class="mut" id="bMineMeta"></span></div>
+        <div class="resolvebar mine"><i id="bMineBar" style="width:100%"></i></div>
+        <div class="small" style="font-weight:800;color:#b0324a;margin-top:8px"><span id="bWildName">Wild Master</span> <span class="mut" id="bWildMeta"></span></div>
+        <div class="resolvebar wild"><i id="bWildBar" style="width:100%"></i></div>
+        <div class="battlelog" id="battleLog" style="margin-top:10px" aria-live="polite"></div>
+        <div id="bMoves" style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px"></div>
+      </div>
+    </div>
     <div class="catchzone">
       <button id="throwBtn" type="button" aria-label="Throw a Muse Orb"></button>
       <div class="throwlbl">Throw a Muse Orb</div>
+      <button class="btn btn-soft btn-sm" id="snackBtn" type="button" style="margin-top:8px;display:none">🍪 Use a Focus Snack (+15% catch)</button>
       <button class="btn btn-soft btn-sm" id="fleeBtn" type="button" style="margin-top:10px">Walk away</button>
     </div>
   </div>
 </div>
 
+<div class="modal" id="depotModal" role="dialog" aria-modal="true" aria-labelledby="depotName">
+  <div class="box">
+    <div style="font-size:52px" id="depotIcon">🏛️</div>
+    <h3 id="depotName">Agent Depot</h3>
+    <p class="small mut" id="depotMeta" style="margin-top:6px"></p>
+    <p class="small" id="depotMsg" aria-live="polite" style="min-height:24px;font-weight:700;color:var(--navy);margin-top:10px"></p>
+    <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:10px">
+      <button class="btn btn-amber" id="depotSpin" type="button">🎁 Spin for supplies</button>
+      <button class="btn btn-navy" id="depotStation" type="button">🛡️ Station my strongest here</button>
+      <button class="btn btn-soft" id="depotClose" type="button">Close</button>
+    </div>
+    <p class="small mut" style="margin-top:10px">Depots are real, named places on the map: landmarks, stations, libraries, museums, cafes. Get within 100 m in the real world to spin. One spin per depot every 10 minutes. Supplies: Embers, the odd Spawn Beacon, an XP boost charge, or a Focus Snack.</p>
+  </div>
+</div>
+
 <div class="toast" id="toast" role="status"></div>
+<div class="bigbanner" id="bigBanner" aria-live="polite"></div>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
@@ -487,8 +579,10 @@ function heroFig(){
 }
 /* ============ STATE ============ */
 var KEY="musego_v1";
-var S={place:"park",caught:{},receipts:[],tasksRun:0,embers:100,coins:0,beacons:1,boostTasks:0,storageBonus:0,rangeBonus:0,sunset:false,beaconFor:null,lastDay:"",streak:0,linked:{}};
+var S={place:null,caught:{},receipts:[],tasksRun:0,embers:100,coins:0,beacons:1,boostTasks:0,storageBonus:0,rangeBonus:0,sunset:false,beaconFor:null,lastDay:"",streak:0,linked:{},combo:0,bestCombo:0,captures:0,scans:0,questDay:"",quests:{},station:null,snacks:1,depotSpins:{},battlesWon:0,snackActive:false};
 try{var raw=localStorage.getItem(KEY);if(raw){var p=JSON.parse(raw);if(p&&p.caught){for(var k in S){if(p[k]!==undefined)S[k]=p[k];}}}}catch(e){}
+/* Location law (Greg, 2026-10-28): turf is never chosen. place starts null every load and is only ever set from a real GPS fix plus real detected places. */
+S.place=null;
 function rosterCapacity(){return 30+S.storageBonus;}
 function rosterCount(){var t=0;Object.keys(S.caught).forEach(function(k){t+=S.caught[k].count;});return t;}
 /* Daily streak: one honest bonus per real day, +50 Embers */
@@ -567,57 +661,353 @@ function detectPlaces(lat,lon){
     });
     Object.keys(DETECTED).forEach(function(k){DETECTED[k].sort(function(x,y){return x.dist-y.dist;});});
     seen.sort(function(x,y){return x.dist-y.dist;});
-    if(!seen.length){box.innerHTML='<div class="flavor">OpenStreetMap shows no named places within 450 m, so the game keeps your picked place. Open areas still spawn the park and home crews.</div>';return;}
+    if(!seen.length){S.place=null;box.innerHTML='<div class="flavor">OpenStreetMap names no mapped places within 450 m of your real position, so you are hunting <b>open ground</b>: spawns run unweighted, the wanderers and generalists country. Walk toward real buildings and landmarks and the turf sharpens. Still your real location. Still no picking.</div>';syncPlaces();return;}
     var strong=seen.filter(function(x){return x.cat!=="home"&&x.cat!=="office"})[0]||seen[0];
     var pl=PLACES.filter(function(x){return x.id===strong.cat})[0];
-    var html='<div class="card" style="margin-top:12px"><b style="color:var(--navy)">Real places detected near you</b> <span class="small mut">(OpenStreetMap data, live)</span><div class="chips">';
+    var html='<div class="card" style="margin-top:12px"><b style="color:var(--navy)">Real places detected near you</b> <span class="small mut">(OpenStreetMap data, read from your GPS fix, display only: turf is set by the data, never by tapping)</span><div class="chips">';
     var catsDone={};
     seen.forEach(function(x){if(catsDone[x.cat])return;catsDone[x.cat]=1;var p=PLACES.filter(function(y){return y.id===x.cat})[0];if(!p)return;
-      html+='<button class="chip" type="button" data-poicat="'+x.cat+'">'+p.icon+" "+p.label+"<small>"+(x.name?x.name+" &middot; ":"")+x.dist+" m</small></button>";});
-    html+='</div><p class="small mut" style="margin-top:8px">The game set your turf to <b>'+(pl?pl.label:strong.cat)+'</b> from the nearest strong signal. Tap any detected place to hunt there instead, or keep your own pick above. Wild agents now stand at these real places on the map when they match.</p></div>';
+      html+='<span class="chip" style="cursor:default">'+p.icon+" "+p.label+"<small>"+(x.name?x.name+" &middot; ":"")+x.dist+" m</small></span>";});
+    html+='</div><p class="small mut" style="margin-top:8px">Your turf is <b>'+(pl?pl.label:strong.cat)+'</b>, set by the nearest strong real signal to where you are standing. Every detected category above boosts its own agents. Wild agents stand at these real places on the map when they match.</p></div>';
     box.innerHTML=html;
-    Array.prototype.forEach.call(box.querySelectorAll("[data-poicat]"),function(b){b.addEventListener("click",function(){S.place=b.dataset.poicat;save();syncPlaces();toast("Hunting turf set to "+(PLACES.filter(function(y){return y.id===S.place})[0]||{}).label+". Scan when ready.");});});
     if(pl){S.place=pl.id;save();syncPlaces();}
-    toast("Real places read: your turf is "+(pl?pl.label:strong.cat)+".");
+    buildDepots();
+    toast("Real places read: your turf is "+(pl?pl.label:strong.cat)+". "+DEPOTS.length+" Agent Depot"+(DEPOTS.length===1?"":"s")+" on your map.");
   })
-  .catch(function(){box.innerHTML='<div class="flavor">Place detection could not reach OpenStreetMap just now, so the game keeps your picked place. Nothing is blocked: pick a place above and play on.</div>';});
+  .catch(function(){S.place=null;box.innerHTML='<div class="flavor">Place detection could not reach OpenStreetMap just now, so you are on <b>open ground</b> rules: spawns run unweighted from your real location. The GPS gate still holds; only the turf weighting is paused.</div>';syncPlaces();});
 }
 function toast(msg){var t=document.getElementById("toast");t.textContent=msg;t.classList.add("show");setTimeout(function(){t.classList.remove("show");},3400);}
-/* ============ PLACES + SPAWNS ============ */
-var placeChips=document.getElementById("placeChips");
-PLACES.forEach(function(pl){
-  var b=document.createElement("button");b.className="chip";b.type="button";b.dataset.place=pl.id;
-  b.setAttribute("aria-pressed",pl.id===S.place?"true":"false");
-  b.innerHTML=pl.icon+" "+pl.label;
-  b.addEventListener("click",function(){S.place=pl.id;save();syncPlaces();});
-  placeChips.appendChild(b);
-});
-function syncPlaces(){
-  Array.prototype.forEach.call(placeChips.children,function(b){b.setAttribute("aria-pressed",b.dataset.place===S.place?"true":"false");});
-  var pl=PLACES.filter(function(x){return x.id===S.place})[0];
-  var here=AGENTS.filter(function(a){return a.places.indexOf(S.place)>=0});
-  var h=new Date().getHours();
-  var tod=h<6?"Night shift hours. Only the devoted are out.":h<11?"Morning hours. Trainers and Teachers are up early.":h<14?"Midday. Chefs are mid service and Bankers are at their desks.":h<18?"Afternoon. Builders and Mechanics are finishing jobs.":"Evening. Artists come out, and Pilots ride the last flight banks.";
-  document.getElementById("flavorBox").innerHTML="<b>On this turf:</b> "+(here.length?here.map(function(a){return a.name}).join(", "):"no home species")+". "+pl.flavor+"<br><span>"+tod+"</span>";
+/* ============ JUICE: confetti, banners, sweeps ============ */
+var CONF_COLORS=["#f5a623","#2bb3a3","#e4577a","#4d9be6","#58b368","#ff7847","#8b6fd8","#ffd34d"];
+function confetti(n){
+  for(var i=0;i<(n||70);i++){
+    var d=document.createElement("div");d.className="confetti";
+    d.style.left=(Math.random()*100)+"vw";d.style.top=(-3-Math.random()*8)+"vh";
+    d.style.background=CONF_COLORS[i%CONF_COLORS.length];
+    d.style.animationDuration=(2.2+Math.random()*1.8)+"s";d.style.animationDelay=(Math.random()*0.5)+"s";
+    if(i%3===0)d.style.borderRadius="50%";
+    document.body.appendChild(d);
+    (function(el){setTimeout(function(){el.remove();},4800);})(d);
+  }
 }
-document.getElementById("geoBtn").addEventListener("click",function(){
+function bigBanner(main,sub){
+  var b=document.getElementById("bigBanner");
+  b.innerHTML=main+(sub?"<small>"+sub+"</small>":"");
+  b.classList.remove("pop");void b.offsetWidth;b.classList.add("pop");
+}
+function sweepFx(){
+  var stage=document.getElementById("mapStage");if(!stage)return;
+  for(var i=0;i<3;i++){
+    var d=document.createElement("div");d.className="sweep";
+    var sz=stage.clientWidth*1.15;
+    d.style.width=sz+"px";d.style.height=sz+"px";
+    d.style.left="calc(50% - "+(sz/2)+"px)";d.style.top="calc(50% - "+(sz/2)+"px)";
+    d.style.animationDelay=(i*0.3)+"s";
+    stage.appendChild(d);
+    (function(el){setTimeout(function(){el.remove();},2600);})(d);
+  }
+}
+/* ============ DAILY QUESTS ============ */
+var QUEST_DEFS=[
+ {id:"catch",icon:"🎯",name:"Field Collector",desc:"Collect 2 agents, anywhere real",target:2,reward:60},
+ {id:"task",icon:"🛠️",name:"Put Them to Work",desc:"Run 3 real tasks with your crew",target:3,reward:50},
+ {id:"scan",icon:"🧭",name:"Neighborhood Scout",desc:"Scan 5 times out in the world",target:5,reward:40}
+];
+function ensureQuests(){
+  var today=new Date().toDateString();
+  if(S.questDay!==today){S.questDay=today;S.quests={};QUEST_DEFS.forEach(function(q){S.quests[q.id]={n:0,claimed:false};});save();}
+}
+function bumpQuest(id){
+  ensureQuests();var q=S.quests[id];if(!q||q.claimed)return;
+  var def=QUEST_DEFS.filter(function(x){return x.id===id})[0];
+  if(q.n<def.target){q.n++;save();renderQuests();
+    if(q.n>=def.target)toast("Quest complete: "+def.name+". Claim your +"+def.reward+" Embers in Today's Quests.");}
+}
+function renderQuests(){
+  ensureQuests();
+  var g=document.getElementById("questGrid");if(!g)return;g.innerHTML="";
+  QUEST_DEFS.forEach(function(def){
+    var q=S.quests[def.id]||{n:0,claimed:false};
+    var pct=Math.min(100,Math.round(100*q.n/def.target));
+    var card=document.createElement("div");card.className="card";
+    card.innerHTML='<b style="color:var(--navy)">'+def.icon+" "+def.name+'</b><p class="small mut" style="margin-top:4px">'+def.desc+'</p>'
+      +'<div class="questbar" style="margin-top:10px"><i style="width:'+pct+'%"></i></div>'
+      +'<p class="small" style="margin-top:8px;font-weight:700;color:var(--navy)">'+Math.min(q.n,def.target)+" / "+def.target+" &middot; reward +"+def.reward+' Embers</p>'
+      +(q.claimed?'<span class="lvl">Claimed ✓</span>':(q.n>=def.target?'<button class="btn btn-amber btn-sm" data-claim="'+def.id+'" type="button">Claim +'+def.reward+' Embers</button>':'<span class="small mut">In progress...</span>'));
+    g.appendChild(card);
+  });
+  Array.prototype.forEach.call(g.querySelectorAll("[data-claim]"),function(b){
+    b.addEventListener("click",function(){
+      var def=QUEST_DEFS.filter(function(x){return x.id===b.dataset.claim})[0];var q=S.quests[def.id];
+      if(!q||q.claimed||q.n<def.target)return;
+      q.claimed=true;S.embers+=def.reward;save();renderAll();confetti(40);
+      toast("+"+def.reward+" Embers claimed. Honest work, honest pay.");
+    });
+  });
+}
+/* ============ MASTER TRIALS (battle system) ============ */
+var FAMILY={doctor:"Care",nurse:"Care",chaplain:"Care",chef:"Food",teacher:"Knowledge",scientist:"Knowledge",mechanic:"Trades",builder:"Trades",gardener:"Trades",pilot:"Travel",trainer:"Travel",banker:"Commerce and Culture",artist:"Commerce and Culture",motivator:"Spirit"};
+var BEATS={"Care":"Spirit","Spirit":"Knowledge","Knowledge":"Trades","Trades":"Commerce and Culture","Commerce and Culture":"Travel","Travel":"Food","Food":"Care"};
+function famAdv(mineFam,wildFam){
+  if(BEATS[mineFam]===wildFam)return {mult:1.25,note:"Family advantage: "+mineFam+" outplays "+wildFam+" (+25%)."};
+  if(BEATS[wildFam]===mineFam)return {mult:0.85,note:"Family disadvantage: "+wildFam+" outplays "+mineFam+" (-15%). Pick a different champion if you can."};
+  return {mult:1,note:"No family advantage either way. Mastery and turf decide it."};
+}
+var battle=null;
+function isMaster(w){return w&&(w.rarity==="Epic"||w.rarity==="Legendary");}
+function collectAgent(w,how){
+  var c=S.caught[w.agent.id];
+  var bonusXp=w.rarity==="Legendary"?120:w.rarity==="Epic"?70:w.rarity==="Rare"?40:w.rarity==="Uncommon"?20:10;
+  var base=20+(w.rarity==="Legendary"?100:w.rarity==="Epic"?60:w.rarity==="Rare"?30:w.rarity==="Uncommon"?10:0);
+  S.combo=(S.combo||0)+1;if(S.combo>S.bestCombo)S.bestCombo=S.combo;
+  var mult=S.combo>=5?3:S.combo>=3?2:1;
+  var emberGain=base*mult;S.embers+=emberGain;S.captures=(S.captures||0)+1;
+  bumpQuest("catch");
+  if(c){c.count++;c.xp+=Math.round(bonusXp/2);}
+  else{S.caught[w.agent.id]={count:1,xp:bonusXp};}
+  if(MAP&&spawnMarkers[enc.idx]){MAP.removeLayer(spawnMarkers[enc.idx]);spawnMarkers[enc.idx]=null;}
+  wildNow[enc.idx]=null;renderNearby();
+  save();renderAll();
+  confetti(w.rarity==="Legendary"?130:80);
+  bigBanner(how||"COLLECTED!",w.agent.name+" joins your crew"+(mult>1?" · COMBO x"+mult:""));
+  return {bonusXp:bonusXp,emberGain:emberGain,mult:mult,dupe:!!c};
+}
+function setupEncounterMode(w){
+  var master=isMaster(w);
+  var bp=document.getElementById("battlePanel"),cz=document.querySelector(".catchzone");
+  document.getElementById("battleZone").style.display="none";
+  battle=null;
+  if(master){
+    bp.style.display="block";cz.style.display="none";
+    var sel=document.getElementById("champSel");sel.innerHTML="";
+    var ids=Object.keys(S.caught);
+    if(!ids.length){sel.innerHTML='<option value="">No agents yet: collect a Common or Rare first</option>';document.getElementById("trialBtn").disabled=true;}
+    else{document.getElementById("trialBtn").disabled=false;
+      ids.sort(function(x,y){return S.caught[y].xp-S.caught[x].xp;});
+      ids.forEach(function(id){var a=agentById(id),L=levelFor(S.caught[id].xp);var o=document.createElement("option");o.value=id;o.textContent=a.name+" · L"+L.n+" "+L.name+" · "+FAMILY[id];sel.appendChild(o);});}
+    document.getElementById("encMsg").textContent="A Master "+w.agent.name+" ("+w.rarity+"). Orbs cannot hold it. Beat it in a Trial of Work, or walk away and come back stronger.";
+  }else{
+    bp.style.display="none";cz.style.display="";
+    var sb=document.getElementById("snackBtn");
+    if(S.snacks>0){sb.style.display="";sb.textContent="🍪 Use a Focus Snack (+15% catch) · "+S.snacks+" left";}else sb.style.display="none";
+  }
+}
+function startTrial(){
+  var w=wildNow[enc.idx];if(!w)return;
+  var cid=document.getElementById("champSel").value;if(!cid){toast("You need a collected agent to champion a Trial.");return;}
+  if(rosterCount()>=rosterCapacity()){document.getElementById("encMsg").textContent="Your roster is full ("+rosterCapacity()+"). Expand storage in the Shop before winning more agents.";return;}
+  var champ=agentById(cid),cLv=levelFor(S.caught[cid].xp);
+  var dc=Object.keys(DETECTED||{});
+  var turf=champ.places.some(function(p){return dc.indexOf(p)>=0;})||champ.places.indexOf(S.place)>=0;
+  var adv=famAdv(FAMILY[cid],FAMILY[w.agent.id]);
+  battle={champId:cid,round:0,
+    mineMax:40+cLv.n*12,mine:40+cLv.n*12,
+    wildMax:w.rarity==="Legendary"?110:85,wild:w.rarity==="Legendary"?110:85,
+    adv:adv,turf:turf,over:false};
+  document.getElementById("battleZone").style.display="block";
+  document.getElementById("bMineName").textContent=champ.name+" (your champion)";
+  document.getElementById("bMineMeta").textContent="L"+cLv.n+" "+cLv.name+(turf?" · home turf bonus":"");
+  document.getElementById("bWildName").textContent="Wild Master "+w.agent.name;
+  document.getElementById("bWildMeta").textContent=w.rarity+" · "+FAMILY[w.agent.id];
+  document.getElementById("battleLog").innerHTML="The Trial begins. "+adv.note+(turf?" Your champion is on home turf here (+10% per move).":"")+"<br>Choose a move: your champion's unlocked real tasks are its Trial moves.";
+  drawBattle();renderMoves();
+}
+function drawBattle(){
+  if(!battle)return;
+  document.getElementById("bMineBar").style.width=Math.max(0,Math.round(100*battle.mine/battle.mineMax))+"%";
+  document.getElementById("bWildBar").style.width=Math.max(0,Math.round(100*battle.wild/battle.wildMax))+"%";
+}
+function renderMoves(){
+  var champ=agentById(battle.champId),L=levelFor(S.caught[battle.champId].xp);
+  var zone=document.getElementById("bMoves");zone.innerHTML="";
+  champ.tasks.forEach(function(t,ti){
+    if(L.n<t[2])return;
+    var b=document.createElement("button");b.className="btn btn-navy btn-sm";b.type="button";
+    b.textContent=t[0]+" · power "+t[3];
+    b.addEventListener("click",function(){trialMove(t);});
+    zone.appendChild(b);
+  });
+}
+function trialMove(t){
+  if(!battle||battle.over)return;
+  var w=wildNow[enc.idx];if(!w)return;
+  var box=document.getElementById("encBox");box.classList.remove("shake");void box.offsetWidth;box.classList.add("shake");
+  battle.round++;
+  var dmg=Math.max(4,Math.round(t[3]*(0.8+Math.random()*0.5)*battle.adv.mult*(battle.turf?1.1:1)));
+  battle.wild-=dmg;
+  var log="Round "+battle.round+": your "+agentById(battle.champId).name+" runs <b>"+t[0]+"</b> for <b>"+dmg+"</b>. ";
+  if(battle.wild>0){
+    var counter=Math.round((w.rarity==="Legendary"?17+Math.random()*11:13+Math.random()*9)*(battle.adv.mult<1?1.1:battle.adv.mult>1?0.9:1));
+    battle.mine-=counter;
+    log+="The Master answers with its own signature work for <b>"+counter+"</b>.";
+  }
+  drawBattle();
+  if(battle.wild<=0){endTrial(true,log);return;}
+  if(battle.mine<=0){endTrial(false,log);return;}
+  if(battle.round>=6){
+    endTrial((battle.mine/battle.mineMax)>=(battle.wild/battle.wildMax),log+" Six rounds: the judges compare what is left standing.");
+    return;
+  }
+  document.getElementById("battleLog").innerHTML=log+"<br>Choose your next move.";
+}
+function endTrial(won,log){
+  battle.over=true;document.getElementById("bMoves").innerHTML="";
+  var w=wildNow[enc.idx];var champId=battle.champId;
+  if(won){
+    S.battlesWon=(S.battlesWon||0)+1;
+    var res=collectAgent(w,"⚔️ TRIAL WON!");
+    document.getElementById("battleLog").innerHTML=log+"<br><b>Your champion takes the Trial!</b> The Master "+w.agent.name+" bows, genuinely impressed, and joins your crew (+"+res.bonusXp+" XP, +"+res.emberGain+" Embers). This is the only way Masters are won: beaten fairly, at their own game.";
+    document.getElementById("encMsg").textContent="Trial won. "+w.agent.name+" is yours.";
+    setTimeout(function(){document.getElementById("encModal").classList.remove("open");},3200);
+  }else{
+    S.combo=0;
+    S.caught[champId].xp+=10;
+    var before=levelFor(S.caught[champId].xp-10),after=levelFor(S.caught[champId].xp);
+    if(MAP&&spawnMarkers[enc.idx]){MAP.removeLayer(spawnMarkers[enc.idx]);spawnMarkers[enc.idx]=null;}
+    wildNow[enc.idx]=null;renderNearby();save();renderAll();
+    document.getElementById("battleLog").innerHTML=log+"<br><b>The Master holds.</b> It nods once, respectful, and returns to the wild. No shame in it: your champion earned +10 training XP for standing in, and Masters stay findable. Level your crew up and come back.";
+    document.getElementById("encMsg").textContent="Trial lost. The Master returns to the wild.";
+    if(after.n>before.n)bigBanner("LEVEL UP!",agentById(champId).name+" is now "+after.name);
+    setTimeout(function(){document.getElementById("encModal").classList.remove("open");},3200);
+  }
+}
+/* ============ AGENT DEPOTS + FORTS ============ */
+var DEPOTS=[],depotMarkers=[],curDepot=-1;
+function depotKey(d){return d.name+"@"+d.lat.toFixed(4)+","+d.lon.toFixed(4);}
+function buildDepots(){
+  DEPOTS=[];var seenK={};
+  Object.keys(DETECTED||{}).forEach(function(cat){
+    (DETECTED[cat]||[]).forEach(function(it){
+      if(!it.name)return;var k=it.name+cat;if(seenK[k])return;seenK[k]=1;
+      DEPOTS.push({name:it.name,cat:cat,lat:it.lat,lon:it.lon,dist:it.dist});
+    });
+  });
+  DEPOTS.sort(function(a,b){return a.dist-b.dist;});
+  DEPOTS=DEPOTS.slice(0,12);
+  renderDepotMarkers();
+}
+function renderDepotMarkers(){
+  if(!MAP)return;
+  depotMarkers.forEach(function(m){MAP.removeLayer(m);});depotMarkers=[];
+  DEPOTS.forEach(function(d,i){
+    var pl=PLACES.filter(function(x){return x.id===d.cat})[0]||{icon:"🏛️"};
+    var icon=L.divIcon({className:"depoticon",html:'<div class="disc">'+pl.icon+'</div><div class="dnm">DEPOT</div>',iconSize:[64,66],iconAnchor:[32,56]});
+    var mk=L.marker([d.lat,d.lon],{icon:icon}).addTo(MAP);
+    (function(idx){mk.on("click",function(){openDepot(idx);});})(i);
+    depotMarkers.push(mk);
+  });
+}
+function openDepot(i){
+  curDepot=i;var d=DEPOTS[i];if(!d)return;
+  var pl=PLACES.filter(function(x){return x.id===d.cat})[0]||{icon:"🏛️",label:d.cat};
+  document.getElementById("depotIcon").textContent=pl.icon;
+  document.getElementById("depotName").textContent=d.name;
+  var dist=playerPos?haversineM(playerPos[0],playerPos[1],d.lat,d.lon):null;
+  document.getElementById("depotMeta").textContent=pl.label+" · Agent Depot"+(dist!=null?" · "+dist+" m from where you stand":"");
+  var last=(S.depotSpins||{})[depotKey(d)]||0;
+  var remain=600000-(Date.now()-last);
+  var spin=document.getElementById("depotSpin"),st=document.getElementById("depotStation");
+  var msg="";
+  if(dist==null){msg="Share your location first: depots answer to where you really are.";spin.disabled=true;st.disabled=true;}
+  else if(dist>100){msg="You are "+dist+" m away. Depots spin in person: walk within 100 m of "+d.name+" and try again. Real legs, real supplies.";spin.disabled=true;st.disabled=true;}
+  else{
+    spin.disabled=remain>0;st.disabled=false;
+    msg=remain>0?("Spun recently. This depot restocks in "+Math.ceil(remain/60000)+" min."):"You are here. Spin it.";
+    var strong=strongestAgent();
+    st.textContent=strong?("🛡️ Station "+strong.name+" (your strongest) here"):"🛡️ Station my strongest here";
+    if(!strong){st.disabled=true;msg+=" You need a collected agent before you can hold a fort.";}
+  }
+  document.getElementById("depotMsg").textContent=msg;
+  document.getElementById("depotModal").classList.add("open");
+}
+function strongestAgent(){
+  var best=null;Object.keys(S.caught).forEach(function(id){if(!best||S.caught[id].xp>S.caught[best].xp)best=id;});
+  return best?agentById(best):null;
+}
+function spinDepot(){
+  var d=DEPOTS[curDepot];if(!d)return;
+  if(!S.depotSpins)S.depotSpins={};
+  S.depotSpins[depotKey(d)]=Date.now();
+  var r=Math.random();var msg;
+  if(r<0.55){var g=15+Math.floor(Math.random()*21);S.embers+=g;msg="+"+g+" Embers tumble out. Every depot keeps a little working capital for explorers.";}
+  else if(r<0.70){S.beacons++;msg="A Spawn Beacon! Aim it from the Shop and your next scan draws that profession to you.";}
+  else if(r<0.87){S.boostTasks+=2;msg="An XP boost charge: your next 2 task runs earn double mastery XP.";}
+  else{S.snacks++;msg="A Focus Snack 🍪: feed it to a wild agent mid encounter for +15% catch chance. Depot only, never sold.";}
+  save();renderAll();confetti(35);
+  document.getElementById("depotMsg").textContent=msg;
+  document.getElementById("depotSpin").disabled=true;
+}
+function stationHere(){
+  var d=DEPOTS[curDepot];if(!d)return;
+  var strong=strongestAgent();if(!strong)return;
+  if(S.station){toast("One fort at a time. Recall "+agentById(S.station.agentId).name+" from "+S.station.placeName+" first.");return;}
+  S.station={agentId:strong.id,placeName:d.name,cat:d.cat,since:Date.now()};
+  save();renderAll();renderFort();
+  document.getElementById("depotModal").classList.remove("open");
+  toast(strong.name+" takes the fort at "+d.name+". It earns while you explore.");
+  bigBanner("🛡️ FORT HELD",strong.name+" stationed at "+d.name);
+}
+function fortRewards(){
+  if(!S.station)return {xp:0,embers:0,hours:0};
+  var hours=Math.min(8,(Date.now()-S.station.since)/3600000);
+  return {xp:Math.floor(hours*8),embers:Math.floor(hours*5),hours:hours};
+}
+function renderFort(){
+  var body=document.getElementById("fortBody");if(!body)return;
+  if(!S.station){
+    body.innerHTML="No agent stationed. Open a Depot on the map (a real landmark near you) and station your strongest agent there: it holds the ground, earns mastery XP and Embers while you are away, and comes home stronger when you recall it. A stationed agent cannot run tasks until recalled, and only one agent can hold a fort at a time.";
+    return;
+  }
+  var a=agentById(S.station.agentId);var rw=fortRewards();
+  body.innerHTML="<b>"+a.name+"</b> is holding the fort at <b>"+S.station.placeName+"</b> since "+new Date(S.station.since).toLocaleString()+".<br>Accrued so far: <b>+"+rw.xp+" mastery XP</b> and <b>+"+rw.embers+" Embers</b> ("+rw.hours.toFixed(1)+" h on duty, earnings cap at 8 h per stint). Recall it to bank the rewards; while stationed it cannot run tasks."
+    +'<div style="margin-top:10px"><button class="btn btn-amber btn-sm" id="recallBtn" type="button">Recall '+a.name+" and bank rewards</button></div>";
+  document.getElementById("recallBtn").addEventListener("click",function(){
+    var a2=agentById(S.station.agentId);var r2=fortRewards();
+    var before=levelFor(S.caught[a2.id].xp);
+    S.caught[a2.id].xp+=r2.xp;S.embers+=r2.embers;
+    var place=S.station.placeName;S.station=null;save();renderAll();renderFort();
+    toast(a2.name+" returns from "+place+": +"+r2.xp+" XP, +"+r2.embers+" Embers banked.");
+    var after=levelFor(S.caught[a2.id].xp);
+    if(after.n>before.n){bigBanner("LEVEL UP!",a2.name+" is now L"+after.n+" "+after.name);confetti(60);}
+  });
+}
+/* ============ LOCATION ONLY (no picker, no override, no hack) ============ */
+function syncPlaces(){
+  var box=document.getElementById("flavorBox");if(!box)return;
+  var h=new Date().getHours();
+  var tod=h<6?"Night shift hours. Only the devoted are out.":h<11?"Morning hours. Trainers and Teachers are up early. Motivators surge at dawn, wherever dawn finds you.":h<14?"Midday. Chefs are mid service and Bankers are at their desks.":h<18?"Afternoon. Builders and Mechanics are finishing jobs.":"Evening. Artists come out, and Pilots ride the last flight banks.";
+  if(!playerPos){box.innerHTML="<b>📍 No location fix yet.</b> Muse GO runs on location alone, so nothing spawns until your device says where you are. Turn on location above: that one tap is the entire gate, and there is no other door.";return;}
+  var dc=Object.keys(DETECTED||{});
+  if(!dc.length){box.innerHTML="<b>On your ground:</b> open ground rules while place data loads or when nothing mapped is near. Spawns run unweighted from your real position. <span>"+tod+"</span>";return;}
+  var here=AGENTS.filter(function(a){return a.places.some(function(p){return dc.indexOf(p)>=0;});});
+  var pl=PLACES.filter(function(x){return x.id===S.place})[0];
+  box.innerHTML="<b>On this turf"+(pl?(" ("+pl.icon+" "+pl.label+")"):"")+":</b> "+(here.length?here.map(function(a){return a.name}).join(", "):"the generalist pool")+" are drawn to the real places around you. "+(pl?pl.flavor:"")+"<br><span>"+tod+"</span>";
+}
+function requestLocation(){
   var out=document.getElementById("geoOut");
-  if(!navigator.geolocation){out.textContent=" Geolocation is not available on this device.";return;}
-  out.textContent=" Locating...";
+  if(!navigator.geolocation){out.textContent="Geolocation is not available on this device, so Muse GO cannot run here. The game is location, all the way down.";return;}
+  out.textContent="Locating...";
   navigator.geolocation.getCurrentPosition(function(pos){
     var la=pos.coords.latitude,lo=pos.coords.longitude;
     playerPos=[la,lo];mapCenter=[la,lo];
-    out.textContent=" You are at "+la.toFixed(3)+", "+lo.toFixed(3)+". The map moved to you, and the game is reading the real places around you.";
+    out.innerHTML="📍 Fixed at "+la.toFixed(3)+", "+lo.toFixed(3)+". The map is on you and the real places around you are being read. Scan away.";
+    document.getElementById("scanBtn").classList.add("ready");
     if(MAP){MAP.setView(playerPos,16);if(PLAYER)PLAYER.setLatLng(playerPos);}
     detectPlaces(la,lo);
-  },function(){out.textContent=" Location permission was not granted. No problem: pick your place above and play on.";},{timeout:9000});
-});
+    syncPlaces();
+  },function(){
+    out.textContent="Location is off or blocked. Muse GO cannot run without it: no fix, no spawns, no workaround. Allow location for this site in your browser settings, then tap again.";
+    playerPos=null;syncPlaces();
+  },{timeout:12000,maximumAge:60000});
+}
+document.getElementById("geoBtn").addEventListener("click",requestLocation);
 function rollRarity(){var r=Math.random()*100,acc=0;for(var i=0;i<RARITY_ROLL.length;i++){acc+=RARITY_ROLL[i][1];if(r<acc)return RARITY_ROLL[i][0];}return "Common";}
 function spawnOne(){
   var rarity=rollRarity();
+  var dc=Object.keys(DETECTED||{});
   var pool=AGENTS.map(function(a){
     var w=1;
-    if(a.places.indexOf(S.place)>=0)w*=6;
+    if(a.places.some(function(p){return dc.indexOf(p)>=0;}))w*=6;
     var dist=Math.abs(RARITY_ROLL.findIndex(function(x){return x[0]===rarity})-RARITY_ROLL.findIndex(function(x){return x[0]===a.rarityBase}));
     w*= (dist===0?5:dist===1?1.2:0.15);
     return {a:a,w:w};
@@ -628,6 +1018,14 @@ function spawnOne(){
 }
 var wildNow=[];
 document.getElementById("scanBtn").addEventListener("click",function(){
+  if(!playerPos){
+    toast("Location first. Muse GO runs on your real location alone, so scanning stays locked until your device fixes where you are.");
+    var gate=document.getElementById("locGate");if(gate){gate.scrollIntoView({behavior:"smooth",block:"center"});gate.classList.remove("gatepulse");void gate.offsetWidth;gate.classList.add("gatepulse");}
+    requestLocation();
+    return;
+  }
+  S.scans=(S.scans||0)+1;bumpQuest("scan");save();
+  sweepFx();
   var n=3+S.rangeBonus;
   wildNow=[];for(var s=0;s<n;s++)wildNow.push(spawnOne());
   if(S.beaconFor){var ba=agentById(S.beaconFor);if(ba){wildNow[0]={agent:ba,rarity:rollRarity()};toast("Your beacon hums: a "+ba.name+" was drawn to you.");}S.beaconFor=null;save();syncBeacon();}
@@ -695,7 +1093,7 @@ function openEncounter(i){
   document.getElementById("encFig").innerHTML=museFig(w.agent,130);
   document.getElementById("encName").textContent="Wild "+w.agent.name;
   var r=document.getElementById("encRarity");r.textContent=w.rarity;r.className="rarity r-"+w.rarity;
-  document.getElementById("encDesc").textContent=w.agent.blurb+" Home turf: "+turfNames(w.agent)+". Species base rarity: "+w.agent.rarityBase+". Catch chance per orb: "+Math.round(CATCH[w.rarity]*100)+"%.";
+  document.getElementById("encDesc").textContent=w.agent.blurb+" Home turf: "+turfNames(w.agent)+". Species base rarity: "+w.agent.rarityBase+"." + (isMaster(w)?" This spawn is a MASTER: no orb catch. Win its Trial of Work to earn it.":" Catch chance per orb: "+Math.round(CATCH[w.rarity]*100)+"%.");
   fillAgentInfo(w.agent);
   document.getElementById("encMsg").textContent="It watches you with its amber core glowing. Throw an orb?";
   var tb=document.getElementById("throwBtn");tb.style.display="";tb.disabled=false;
@@ -704,6 +1102,7 @@ function openEncounter(i){
   document.getElementById("orbRow").style.display="";
   document.getElementById("fleeBtn").textContent="Walk away";
   drawOrbs();
+  setupEncounterMode(w);
   document.getElementById("encModal").classList.add("open");
 }
 function openProfile(a){
@@ -714,6 +1113,7 @@ function openProfile(a){
   document.getElementById("encDesc").textContent=a.blurb+" Home turf: "+turfNames(a)+". Find it there, or anywhere at a trickle.";
   fillAgentInfo(a);
   document.getElementById("encMsg").textContent=S.caught[a.id]?"This agent is in your crew. Run its tasks in My Crew below.":"Not collected yet. Scan on its home turf for the best odds.";
+  document.getElementById("battlePanel").style.display="none";
   document.getElementById("throwBtn").style.display="none";
   document.querySelector(".throwlbl").style.display="none";
   document.getElementById("orbRow").style.display="none";
@@ -725,29 +1125,37 @@ function drawOrbs(){
   for(var i=0;i<3;i++){var d=document.createElement("div");d.className="orb"+(i<enc.orbs?"":" spent");row.appendChild(d);}
 }
 document.getElementById("fleeBtn").addEventListener("click",function(){document.getElementById("encModal").classList.remove("open");});
+document.getElementById("trialBtn").addEventListener("click",startTrial);
+document.getElementById("snackBtn").addEventListener("click",function(){
+  if(S.snacks<=0||S.snackActive)return;
+  S.snacks--;S.snackActive=true;save();
+  document.getElementById("encMsg").textContent="Focus Snack offered. The agent settles, curious and calm. Catch chance up for this encounter.";
+  document.getElementById("snackBtn").style.display="none";
+});
+document.getElementById("depotSpin").addEventListener("click",spinDepot);
+document.getElementById("depotStation").addEventListener("click",stationHere);
+document.getElementById("depotClose").addEventListener("click",function(){document.getElementById("depotModal").classList.remove("open");});
 document.getElementById("throwBtn").addEventListener("click",function(){
   if(enc.done||enc.orbs<=0)return;
   var w=wildNow[enc.idx];
+  if(isMaster(w)){document.getElementById("encMsg").textContent="Orbs slide right off a Master. This one is won in a Trial, not thrown at.";return;}
   if(rosterCount()>=rosterCapacity()){document.getElementById("encMsg").textContent="Your roster is full ("+rosterCapacity()+" agents). Expand storage in the Shop before collecting more.";return;}
   var box=document.getElementById("encBox");box.classList.remove("shake");void box.offsetWidth;box.classList.add("shake");
   enc.orbs--;drawOrbs();
   var msg=document.getElementById("encMsg");
-  if(Math.random()<CATCH[w.rarity]){
+  var chance=CATCH[w.rarity]+(S.snackActive?0.15:0);
+  if(Math.random()<chance){
     enc.done=true;document.getElementById("throwBtn").disabled=true;
-    var c=S.caught[w.agent.id];
-    var bonusXp=w.rarity==="Legendary"?120:w.rarity==="Epic"?70:w.rarity==="Rare"?40:w.rarity==="Uncommon"?20:10;
-    var emberGain=20+(w.rarity==="Legendary"?100:w.rarity==="Epic"?60:w.rarity==="Rare"?30:w.rarity==="Uncommon"?10:0);
-    S.embers+=emberGain;
-    if(c){c.count++;c.xp+=Math.round(bonusXp/2);msg.textContent="Already in your crew, so this "+w.agent.name+" shares its field notes instead: +"+Math.round(bonusXp/2)+" mastery XP for your "+w.agent.name+", and +"+emberGain+" Embers.";}
-    else{S.caught[w.agent.id]={count:1,xp:bonusXp};msg.textContent="Collected! The "+w.agent.name+" joins your crew with "+bonusXp+" XP and +"+emberGain+" Embers. Find it in My Crew and put it to work.";}
-    if(MAP&&spawnMarkers[enc.idx]){MAP.removeLayer(spawnMarkers[enc.idx]);spawnMarkers[enc.idx]=null;}
-    wildNow[enc.idx]=null;renderNearby();
-    save();renderAll();
+    S.snackActive=false;
+    var res=collectAgent(w);
+    if(res.dupe){msg.textContent="Already in your crew, so this "+w.agent.name+" shares its field notes instead: +"+Math.round(res.bonusXp/2)+" mastery XP for your "+w.agent.name+", and +"+res.emberGain+" Embers"+(res.mult>1?" (combo x"+res.mult+"!)":"")+".";}
+    else{msg.textContent="Collected! The "+w.agent.name+" joins your crew with "+res.bonusXp+" XP and +"+res.emberGain+" Embers"+(res.mult>1?" (combo x"+res.mult+": "+S.combo+" catches in a row!)":"")+". Find it in My Crew and put it to work.";}
     toast(w.agent.name+" collected. Your crew grows.");
-    setTimeout(function(){document.getElementById("encModal").classList.remove("open");},2100);
+    setTimeout(function(){document.getElementById("encModal").classList.remove("open");},2400);
   }else if(enc.orbs<=0){
     enc.done=true;document.getElementById("throwBtn").disabled=true;
-    msg.textContent="It broke free and wandered off. Scan again; the turf has not changed, and neither has your luck for long.";
+    S.combo=0;S.snackActive=false;save();renderStats();
+    msg.textContent="It broke free and wandered off, and your catch combo resets. Scan again; the turf has not changed, and neither has your luck for long.";
     var idx=enc.idx;
     setTimeout(function(){document.getElementById("encModal").classList.remove("open");wildNow[idx]=null;document.getElementById("scanBtn").click();},1900);
   }else{
@@ -789,10 +1197,11 @@ function renderCrew(){
       +'<div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap;align-items:center"><button class="btn btn-navy btn-sm" data-brief="'+id+'" type="button">Copy my Muse brief</button>'
       +(S.linked&&S.linked[id]?'<span class="small" style="font-weight:700;color:var(--teal)">Linked to my Muse (you confirmed the paste)</span>':'<button class="btn btn-soft btn-sm" data-link="'+id+'" type="button">I pasted it into Muse: mark linked</button>')
       +'</div></div></div>';
-    var tasks='<div style="margin-top:12px"><b class="small" style="color:var(--navy);letter-spacing:.05em">TASKS THIS AGENT CAN RUN</b>';
+    var stationed=S.station&&S.station.agentId===id;
+    var tasks='<div style="margin-top:12px"><b class="small" style="color:var(--navy);letter-spacing:.05em">TASKS THIS AGENT CAN RUN</b>'+(stationed?'<p class="small" style="font-weight:700;color:#b0324a">🛡️ Holding the fort at '+S.station.placeName+'. Recall it from Today\'s Quests to run tasks again.</p>':"");
     a.tasks.forEach(function(t,ti){
-      var unlocked=L.n>=t[2];
-      tasks+='<div class="task'+(unlocked?"":" locked")+'"><div><b>'+t[0]+'</b><p>'+t[1]+'</p></div>'+(unlocked?'<button class="btn btn-amber btn-sm" data-run="'+id+":"+ti+'" type="button">Run &middot; +'+t[3]+' XP</button>':'<span class="need">Unlocks L'+t[2]+'</span>')+'</div>';
+      var unlocked=L.n>=t[2]&&!stationed;
+      tasks+='<div class="task'+(unlocked?"":" locked")+'"><div><b>'+t[0]+'</b><p>'+t[1]+'</p></div>'+(unlocked?'<button class="btn btn-amber btn-sm" data-run="'+id+":"+ti+'" type="button">Run &middot; +'+t[3]+' XP</button>':'<span class="need">'+(stationed?"On fort duty":"Unlocks L"+t[2])+'</span>')+'</div>';
     });
     tasks+='</div>';
     card.innerHTML=head+tasks;
@@ -804,11 +1213,13 @@ function renderCrew(){
       var gain=t[3],boosted=false;
       if(S.boostTasks>0){gain*=2;S.boostTasks--;boosted=true;}
       S.caught[a.id].xp+=gain;S.tasksRun++;S.embers+=15;
+      bumpQuest("task");
       var before=levelFor(S.caught[a.id].xp-gain),after=levelFor(S.caught[a.id].xp);
       S.receipts.unshift({agent:a.name,task:t[0],xp:gain,when:new Date().toLocaleString(),out:t[1]+(boosted?" (XP Boost active: doubled.)":"")});
       if(S.receipts.length>30)S.receipts.pop();
       save();renderAll();
       toast(a.name+" ran: "+t[0]+" (+"+gain+" XP, +15 Embers)"+(after.n>before.n?". Mastery up: "+after.name+"!":""));
+      if(after.n>before.n){bigBanner("⭐ LEVEL UP!",a.name+" is now L"+after.n+" "+after.name);confetti(50);}
     });
   });
   Array.prototype.forEach.call(list.querySelectorAll("[data-link]"),function(b){
@@ -841,7 +1252,9 @@ function renderStats(){
   document.getElementById("stXp").textContent=totalXp();
   var tx=totalXp(),tl=levelFor(tx),tnx=nextLevel(tx);
   document.getElementById("trainerFig").innerHTML=museFig({name:"Explorer",accent:"#f5a623",prop:""},40);
-  document.getElementById("trainerMeta").textContent="Level "+tl.n+" · "+tx+" XP · "+ids.length+" species";
+  document.getElementById("trainerMeta").textContent="Level "+tl.n+" · "+tx+" XP · "+ids.length+" species · 🔥 "+(S.streak||1)+" day streak";
+  var cb=document.getElementById("comboBadge");
+  if(S.combo>=2){cb.style.display="";cb.textContent="COMBO x"+(S.combo>=5?3:S.combo>=3?2:1)+" · "+S.combo+" straight catches";}else cb.style.display="none";
   document.getElementById("trainerXp").style.width=(tnx?Math.round(100*(tx-LEVELS[tl.n-1].xp)/(tnx.xp-LEVELS[tl.n-1].xp)):100)+"%";
   var buddy=ids.length?agentById(ids[0]):null;
   document.getElementById("buddyFig").innerHTML=museFig(buddy||{name:"None",accent:"#8a93a6",prop:""},34);
@@ -909,13 +1322,16 @@ function renderMatrix(){
     t.appendChild(tr);
   });
 }
-function renderAll(){renderDex();renderCrew();renderReceipts();renderStats();renderShop();}
+function renderAll(){renderDex();renderCrew();renderReceipts();renderStats();renderShop();renderQuests();renderFort();}
 document.getElementById("logoFig").innerHTML=museFig({name:"Muse",accent:"#f5a623",prop:""},34);
 document.getElementById("youFig").innerHTML=museFig({name:"You",accent:"#2bb3a3",prop:""},52);
 document.getElementById("recenterBtn").addEventListener("click",function(){if(MAP)MAP.setView(playerPos||mapCenter,16);});
 document.getElementById("trainerCard").addEventListener("click",function(){document.getElementById("menuPop").classList.toggle("open");});
 Array.prototype.forEach.call(document.querySelectorAll("#menuPop a"),function(a){a.addEventListener("click",function(){document.getElementById("menuPop").classList.remove("open");});});
 syncPlaces();renderMatrix();renderAll();applyScene();initMap();
+ensureQuests();renderQuests();renderFort();
+/* Location law: the game asks for its one input up front. No fix, no game. */
+setTimeout(function(){if(!playerPos)requestLocation();},600);
 </script>
 </body>
 </html>

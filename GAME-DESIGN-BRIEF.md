@@ -127,3 +127,16 @@ Today's honest bridge is the brief: every collected agent exports a copy ready M
 ## What is real vs stubbed in v1
 
 Real: geolocation, spawn weighting and rarity math, catch encounters, the 14 species Dex, mastery XP and levels, receipts, persistence, brief export. Simulated: place category detection (player declared) and in game task outputs. Not claimed: accounts, servers, background location, push alerts, AR. Those are v2.
+
+
+## Addendum 2026-10-28 evening (Greg, live in London): location law, the five, battle, depots, forts
+
+LOCATION LAW (Greg, absolute): the game runs on device location and location alone. The manual place picker was REMOVED. Scanning is gated on a real GPS fix; turf, spawn weighting, depots, and forts all derive from the fix plus real OpenStreetMap places detected around it. Detected places are display only. There is no override to hack.
+
+THE FIVE UX IMPROVEMENTS (shipped same night): (1) confetti bursts and big animated COLLECTED / LEVEL UP banners; (2) radar sweep pulses on scan and pop-in spawn animations on the map; (3) a bold cartoon skin: thick navy outlines, hard offset shadows, sticker rarity badges, shimmer animations on Epic and Legendary; (4) three daily quests with progress bars and claimable Ember rewards (collect 2, run 3 tasks, scan 5); (5) catch combo multiplier on Ember rewards (x2 at 3 straight catches, x3 at 5, resets on an escape) plus the streak flame on the trainer card.
+
+BATTLE SYSTEM (Greg's design prompt, EDITH's build): Master Trials. Epic and Legendary spawns are Masters and cannot be orb caught. The player nominates a champion; its unlocked tasks are its moves (power = task XP), Resolve = 40 + 12 per mastery level; the Master (85 Epic / 110 Legendary Resolve) counters with signature work. Family ring: Care > Spirit > Knowledge > Trades > Commerce > Travel > Food > Care (+25% / -15%); home turf +10% damage. Win: the Master joins (only route). Lose: it returns to the wild, champion banks +10 training XP. Six round cap, judges decide on remaining Resolve share.
+
+AGENT DEPOTS (Greg's PokeStop ask): real named places from the detection pass become Depot markers (cap 12, nearest first). Spin requires standing within 100 m (haversine on the real fix), one spin per depot per 10 minutes. Rewards: Embers (55%), Spawn Beacon (15%), +2 XP boost charges (17%), Focus Snack (13%, +15% catch for one encounter, depot only, never sold).
+
+FORTS (Greg's "leave my strongest behind"): at a Depot, station your strongest agent. It earns +8 mastery XP and +5 Embers per hour, capped at 8 hours per stint, banked on recall. While stationed it cannot run tasks. One fort at a time.

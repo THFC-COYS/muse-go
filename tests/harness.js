@@ -83,6 +83,28 @@ ok(html.includes("renderMapSpawns"), "wild agents stand on the real map");
 ok(html.includes("OpenStreetMap contributors"), "map attribution shown");
 ok(html.includes("box.enc"), "encounter screen styled as a catch screen");
 
+// Location law + tonight's five + battle + depots (Greg, 2026-10-28 evening)
+ok(!html.includes('id="placeChips"'), "place picker REMOVED: location only");
+ok(html.includes('id="locGate"'), "location gate card present");
+ok(html.includes("if(!playerPos)"), "scan is gated on a real GPS fix");
+ok(html.includes("requestLocation"), "location request flow present");
+ok(html.includes("confetti"), "improvement 1: confetti bursts");
+ok(html.includes("bigBanner"), "improvement 1: big COLLECTED / LEVEL UP banners");
+ok(html.includes("sweepFx"), "improvement 2: radar sweep on scan");
+ok(html.includes("popin"), "improvement 2: spawn pop-in animation");
+ok(html.includes("7px 7px 0"), "improvement 3: cartoon hard-shadow skin");
+ok(html.includes("QUEST_DEFS"), "improvement 4: daily quests defined");
+ok(html.includes("renderQuests"), "improvement 4: quests rendered with progress");
+ok(html.includes("combo"), "improvement 5: catch combo multiplier");
+ok(html.includes("day streak"), "improvement 5: streak flame on trainer card");
+ok(html.includes("Master Trial") || html.includes("MASTER TRIAL"), "battle: Master Trials present");
+ok(html.includes("startTrial") && html.includes("trialMove"), "battle: trial engine wired");
+ok(html.includes("BEATS"), "battle: family matchup ring present");
+ok(html.includes("Agent Depot") && html.includes("spinDepot"), "depots: spin for supplies wired");
+ok(html.includes("stationHere") && html.includes("fortRewards"), "forts: station and accrue rewards");
+ok(html.includes("within 100"), "depots: real proximity rule stated");
+ok(html.includes("data-poicat") === false, "detected places are display only, never tappable turf");
+
 // Greg laws
 ok(!html.includes("—"), "no em dashes anywhere");
 ok(html.includes("localStorage"), "collection persists on device");
