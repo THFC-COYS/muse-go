@@ -164,6 +164,14 @@ ok(html.includes("openstreetmap.org/?mlat="), "field record links to the real sp
 ok(html.includes("rounded to about 100 m"), "coordinate rounding disclosed in plain language");
 ok(html.includes("will not invent a birthplace"), "pre-journal catches stay honest, no invented origins");
 
+// Coming Soon lockdown + demo mode + waitlist (Greg, 2026-10-28)
+ok(html.includes("gateOverlay") && html.includes("coming soon"), "coming soon gate present");
+ok(html.includes("wlJoin") && html.includes("wlEmail") && html.includes("wlPlatform"), "beta waitlist form present (email + platform)");
+ok(html.includes("formsubmit.co/ajax/"), "waitlist delivers to the developer inbox");
+ok(html.includes("DEMO_SPECIES_CAP") && html.includes("demoRibbon"), "demo mode with a species cap and ribbon");
+ok(html.includes("amuse_mode") && html.includes("gateUnlock"), "insider access code unlocks full mode per device");
+ok(html.includes("Purchases are parked in the demo"), "demo parks purchases honestly");
+
 // Greg laws
 ok(!html.includes("—"), "no em dashes anywhere");
 ok(html.includes("localStorage"), "collection persists on device");
