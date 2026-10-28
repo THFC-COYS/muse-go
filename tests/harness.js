@@ -127,10 +127,10 @@ ok(html.includes("clipPath"), "outfits are clipped to the torso");
   ok(html.includes('case "'+id+'"'), "outfit defined for: " + id);
 });
 
-// Agentia rebrand (Greg, 2026-10-28: name not tied to Muse)
-ok(html.includes("<title>Agentia: Collect AI Agents"), "Agentia is the store-bound name");
+// AMUSE rebrand (Greg, 2026-10-28: name not tied to Muse)
+ok(html.includes("<title>AMUSE: Collect AI Agents"), "AMUSE is the store-bound name");
 ok(html.includes("Core Coins"), "premium currency renamed to Core Coins");
-ok(!html.includes("Muse Coins") && !html.includes("Agentia GO") && !html.includes("Agentia: Collect Agents in the Wild</title>"), "old Muse GO branding retired");
+ok(!html.includes("Muse Coins") && !html.includes("AMUSE GO") && !html.includes("AMUSE: Collect Agents in the Wild</title>"), "old Muse GO branding retired");
 
 // Full build: onboarding, movement, store bridge, backup, safety (2026-10-28)
 ok(html.includes("onboardCard") && html.includes("Your first hunt"), "guided first hunt present");

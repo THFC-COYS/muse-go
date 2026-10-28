@@ -1,4 +1,4 @@
-# Agentia (working title)
+# AMUSE (working title)
 
 A Pokemon GO style collection game for Muse agents. Explore the real world, collect profession agents where they live (a Doctor near the hospital, a Chef by the restaurant, a Pilot at the airport), and put them to work: every collected agent exports a copy ready Muse brief (WHO the soul / WHAT the job / WHERE YOU STAY IN CHARGE) and earns mastery XP by completing tasks, unlocking more autonomous work behind Greg's governance floor: send, pay, delete, and publish always need the owner's yes.
 

@@ -1,20 +1,17 @@
 # Launch plan: from web proof to store beta (prepared 2026-10-28, for Greg's decisions)
 
 ## Status, 2026-10-28 (Greg: "Start the full build")
-DONE in the web beta and shipped live: Agentia rebrand + Core Coins rename; guided first hunt onboarding; continuous location watch with walking distance, buddy walking XP, teleport guard, and driving lockout with passenger attestation; University place category; K-12 schools excluded from Depots; Store Bridge payments (honest labeled sandbox on web, Apple/Google IAP interface for native) with the four designed coin packs and restore purchases; the unlabeled test mint is GONE; backup/restore save codes; privacy, terms, and support/location-removal pages published with the game; Capacitor native scaffold in /native with Greg's Mac build steps. STILL GREG-ONLY: developer program enrollments, final name confirmation + trademark search, RevenueCat account and store product creation, bank/tax for payouts. NEXT BUILD STEPS after enrollments: AgentiaNative bridge plugin to RevenueCat, iOS/Android platform projects on Greg's Mac, TestFlight + Play closed track submission, then the LinkedIn beta announcement.
+DONE in the web beta and shipped live: AMUSE rebrand + Core Coins rename; guided first hunt onboarding; continuous location watch with walking distance, buddy walking XP, teleport guard, and driving lockout with passenger attestation; University place category; K-12 schools excluded from Depots; Store Bridge payments (honest labeled sandbox on web, Apple/Google IAP interface for native) with the four designed coin packs and restore purchases; the unlabeled test mint is GONE; backup/restore save codes; privacy, terms, and support/location-removal pages published with the game; Capacitor native scaffold in /native with Greg's Mac build steps. NAME UPDATE later the same evening: Greg reopened the name and chose AMUSE (see The name, below); the rebrand to AMUSE shipped the same night. STILL GREG-ONLY: developer program enrollments, trademark search on AMUSE, RevenueCat account and store product creation, bank/tax for payouts. NEXT BUILD STEPS after enrollments: AMUSENative bridge plugin to RevenueCat, iOS/Android platform projects on Greg's Mac, TestFlight + Play closed track submission, then the LinkedIn beta announcement.
 
 ## The name
 
-Greg's instinct is right: keep "Muse" out of the title. Muse is Meta's name; a commercial game title built on it invites a trademark fight and implies an official Meta product. The Muse connection stays inside the game as the export feature ("send your collected agent to work in your AI assistant"), which is a stronger story anyway: the game is bigger than any one platform.
+### DECIDED by Greg, 2026-10-28: AMUSE
+Store title: **AMUSE: Collect AI Agents** (subtitle field: "Explore the real world. Collect agents that actually work for you.")
+Greg asked for Muse in the name, the sneaky way. AMUSE is it: A-MUSE, with MUSE glowing inside an ordinary English word for delight that nobody can fence off. It backronyms the game: Agents, Mastery, Upgrades, Skills, Exploration. The logo renders the MUSE in amber so the wink is visible. Earlier that evening EDITH had recommended keeping Muse out entirely (Meta trademark; a title built directly on it invites a fight and implies an official product) and shipped "Agentia" as the working name; Greg reopened it, was offered AMUSE / MuSeum / Agentia-with-Muse-subtitle, and picked AMUSE. A formal trademark search is still required before store submission.
 
-### Recommendation: AGENTIA
-Store title: **Agentia: Collect AI Agents** (subtitle field: "Explore the real world. Collect agents that actually work for you.")
-Why it wins: one invented word (ownable, searchable, app-icon friendly), it names a place, and the game is literally a world full of agents. Checks run 2026-10-28: no App Store or Google Play game by this name; only an obscure itch.io poetry experiment. A formal trademark search is still required before launch.
-
-### Runner-ups
-2. **Agentopia** — same coined-world logic, slightly friendlier; use if Agentia hits a trademark snag.
-3. **Agent Trails** — descriptive and warm (explore, collect, trails), weaker defensibility because the words are generic.
-Retired after collision checks: Pocket Agents (an AI dev-tool project and a delisted real-estate app already use it in adjacent space), Agent Atlas (ATLAS:EARTH is a heavyweight location collecting game, 113K ratings), Muse GO (trademark), Wild Agents (fine but generic; survives as a tagline).
+### Held in reserve
+**MuSeum** (Muse + museum pun; collecting is curating; matches his MuSe SIM / Muse Exchange stylization) and **Agentia** (one invented word; collision checked clean on the stores, only an obscure itch.io poetry experiment).
+Retired after collision checks: Pocket Agents (an AI dev-tool project and a delisted real-estate app already use it in adjacent space), Agent Atlas (ATLAS:EARTH is a heavyweight location collecting game, 113K ratings), Muse GO (direct trademark), Agentopia and Agent Trails (superseded backups).
 
 Currency can keep their names under any title: Embers + Agent Coins (rename "Muse Coins" to **Core Coins** for the same trademark reason).
 
