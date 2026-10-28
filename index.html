@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Muse GO: Collect Agents in the Wild</title>
+<title>Agentia: Collect AI Agents in the Real World</title>
 <meta name="description" content="A Pokemon GO style collection game for Muse agents. Explore the real world, collect profession agents where they live, and put them to work.">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 <style>
@@ -257,7 +257,7 @@ footer b{color:var(--cream)}
 </head>
 <body>
 <header class="top"><div class="wrap top-in">
-  <div class="logo"><span class="dot" id="logoFig"></span> Muse GO</div>
+  <div class="logo"><span class="dot" id="logoFig"></span> Agentia</div>
   <nav class="topnav">
     <a href="#play">Play</a><a href="#dex">Agent Dex</a><a href="#crew">My Crew</a><a href="#shop">Shop</a><a href="#design">Game Design</a><a href="#native">Native Path</a>
   </nav>
@@ -288,14 +288,21 @@ footer b{color:var(--cream)}
 
 <section id="play">
   <h2 class="sec">1. Explore and collect</h2>
-  <p class="sub">Muse GO runs on your real location, and only your real location. There is no place picker and no way to fake where you are standing: share your location, the game reads the actual places around you, and agents spawn weighted by that turf. A Doctor near a real hospital. A Chaplain inside a real church. That is the whole deal, and it cannot be hacked from the couch.</p>
+  <p class="sub">Agentia runs on your real location, and only your real location. There is no place picker and no way to fake where you are standing: share your location, the game reads the actual places around you, and agents spawn weighted by that turf. A Doctor near a real hospital. A Chaplain inside a real church. That is the whole deal, and it cannot be hacked from the couch.</p>
   <div class="stats">
     <div class="stat"><b id="stCaught">0</b><span>Agents collected</span></div>
     <div class="stat"><b id="stSpecies">0 / 14</b><span>Dex species</span></div>
     <div class="stat"><b id="stTasks">0</b><span>Real tasks run</span></div>
     <div class="stat"><b id="stXp">0</b><span>Total mastery XP</span></div>
     <div class="stat"><b id="stSparks">0</b><span>Embers (earned)</span></div>
-    <div class="stat"><b id="stCoins">0</b><span>Muse Coins (premium)</span></div>
+    <div class="stat"><b id="stCoins">0</b><span>Core Coins (premium)</span></div>
+  </div>
+
+  <div class="card" id="onboardCard" style="margin-top:16px;border:3px solid var(--navy)">
+    <b style="color:var(--navy);font-size:19px">🎯 Your first hunt (90 seconds)</b>
+    <p class="small mut" style="margin-top:4px">Four steps and you are playing. Finish all four for a +25 Ember welcome bonus.</p>
+    <div id="obSteps" style="margin-top:10px;display:grid;gap:6px"></div>
+    <button class="btn btn-soft btn-sm" id="obSkip" type="button" style="margin-top:8px">Skip the guide</button>
   </div>
 
   <div class="card" style="margin-top:16px">
@@ -305,6 +312,10 @@ footer b{color:var(--cream)}
       <div style="margin-top:10px;display:flex;gap:10px;flex-wrap:wrap;align-items:center">
         <button class="btn btn-amber" id="geoBtn" type="button">📍 Turn on my location</button>
         <span class="small" id="geoOut" aria-live="polite" style="font-weight:600;color:var(--navy)">Waiting for your location fix...</span>
+      </div>
+      <div id="driveBox" style="display:none;margin-top:10px">
+        <span class="small" style="font-weight:700;color:#b3452e">🚗 You look like you are in a moving vehicle. Scanning is paused: never play while driving.</span>
+        <button class="btn btn-navy btn-sm" id="passengerBtn" type="button" style="margin-left:8px">I am a passenger</button>
       </div>
     </div>
     <div class="flavor" id="flavorBox" style="margin-top:12px">Your turf appears here once your location is fixed and the real places around you are read.</div>
@@ -338,6 +349,16 @@ footer b{color:var(--cream)}
     <b style="color:var(--navy)">🛡️ Your Fort</b>
     <div id="fortBody" class="small" style="margin-top:6px">No agent stationed. Open a Depot on the map (a real landmark near you) and station your strongest agent there: it holds the ground, earns mastery XP and Embers while you are away, and comes home stronger when you recall it. A stationed agent cannot run tasks until recalled, and only one agent can hold a fort at a time.</div>
   </div>
+
+  <div class="card" style="margin-top:16px" id="dataCard">
+    <b style="color:var(--navy)">💾 Your data</b>
+    <p class="small mut" style="margin-top:6px">In this web beta your collection lives on this device only. Cloud accounts arrive with the native app; until then, a backup code is your safety net. Copy it somewhere safe: paste it on any device to restore your whole game. Walked distance today: <b id="walkLine">0 m</b>.</p>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px">
+      <button class="btn btn-navy btn-sm" id="backupBtn" type="button">Copy my backup code</button>
+      <button class="btn btn-soft btn-sm" id="restoreSaveBtn" type="button">Restore from a code</button>
+    </div>
+    <textarea id="saveCodeBox" class="small" style="display:none;width:100%;margin-top:8px;min-height:70px;border:2px solid var(--line);border-radius:10px;padding:8px" placeholder="Paste a backup code here, then tap Restore again"></textarea>
+  </div>
 </section>
 
 <section id="dex">
@@ -359,13 +380,15 @@ footer b{color:var(--cream)}
 
 <section id="shop">
   <h2 class="sec">4. The Shop: two currencies, honest rules</h2>
-  <p class="sub"><b>Embers</b> are earned by playing: catching agents, running real tasks, keeping a daily streak. <b>Muse Coins</b> are the premium currency, bought with real money in the native app. The guardrail that never bends: money speeds things up, it never buys mastery or trust. Capability is earned by using your agents. Every price below is stated in plain language, and there are no loot boxes and no hidden odds anywhere in this game.</p>
+  <p class="sub"><b>Embers</b> are earned by playing: catching agents, running real tasks, keeping a daily streak. <b>Core Coins</b> are the premium currency, bought with real money in the native app. The guardrail that never bends: money speeds things up, it never buys mastery or trust. Capability is earned by using your agents. Every price below is stated in plain language, and there are no loot boxes and no hidden odds anywhere in this game.</p>
   <div class="card" style="margin-top:16px">
-    <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:space-between">
-      <p><b style="color:var(--navy)">Your wallet:</b> <span id="walletLine">0 Embers &middot; 0 Muse Coins</span> <span class="small mut" id="invLine"></span></p>
-      <button class="btn btn-soft btn-sm" id="testCoinsBtn" type="button">Add 500 test Coins (v1 simulation, not real money)</button>
+    <p><b style="color:var(--navy)">Your wallet:</b> <span id="walletLine">0 Embers &middot; 0 Core Coins</span> <span class="small mut" id="invLine"></span></p>
+    <div style="margin-top:12px">
+      <b class="small" style="color:var(--navy);letter-spacing:.05em">GET CORE COINS</b>
+      <div class="grid2" id="coinPacks" style="margin-top:8px"></div>
+      <p class="small mut" style="margin-top:8px" id="storeNote">Payments run through the store bridge. In the native app these are Apple or Google in-app purchases, verified server side. In this web beta the bridge runs in an honestly labeled sandbox: tapping a pack simulates the store sheet, no real charge, ever.</p>
+      <button class="btn btn-soft btn-sm" id="restoreBtn" type="button">Restore purchases</button>
     </div>
-    <p class="small mut" style="margin-top:6px">In v1 the whole economy is simulated on this device: balances are real inside the game, purchases do nothing outside it, and the test Coins button stands in for the app store. Real price points in the design: Coins at $0.99 for 100, $4.99 for 550, $9.99 for 1,200, $19.99 for 2,600.</p>
     <div class="grid2" id="shopGrid" style="margin-top:14px"></div>
     <div style="margin-top:14px;border:1px solid var(--line);border-radius:12px;padding:12px 14px;background:#fff">
       <b class="small" style="color:var(--navy);letter-spacing:.05em">SPAWN BEACON</b>
@@ -378,7 +401,7 @@ footer b{color:var(--cream)}
     </div>
     <div style="margin-top:12px;border:1px solid var(--line);border-radius:12px;padding:12px 14px;background:#fff">
       <b class="small" style="color:var(--navy);letter-spacing:.05em">SEASON PASS AND PRO (design stubs in v1)</b>
-      <p class="small" style="margin-top:4px"><b>Season Pass, $4.99 per season:</b> exclusive agent variants (this season: Aurora outfits for the medical crew), bonus Embers on every task, and a season Dex page. <b>Muse GO Pro, $7.99 per month:</b> run 3 agents on standing routines at once instead of 1, +30 roster storage, and 300 Coins monthly. Free players keep the full game: every species, every mastery level, every task. Paying accelerates and decorates; it never unlocks trust.</p>
+      <p class="small" style="margin-top:4px"><b>Season Pass, $4.99 per season:</b> exclusive agent variants (this season: Aurora outfits for the medical crew), bonus Embers on every task, and a season Dex page. <b>Agentia Pro, $7.99 per month:</b> run 3 agents on standing routines at once instead of 1, +30 roster storage, and 300 Coins monthly. Free players keep the full game: every species, every mastery level, every task. Paying accelerates and decorates; it never unlocks trust.</p>
     </div>
   </div>
 </section>
@@ -414,7 +437,7 @@ footer b{color:var(--cream)}
   <div class="grid3" style="margin-top:16px">
     <div class="card"><b style="color:var(--navy)">The honest loop</b><p class="small" style="margin-top:6px">Explore, collect, delegate, watch it work, rate the result. Agents get better because you use them on real work, so the game rewards the habit Muse is actually for. The Dex tracks species, your best mastery per species, and a Hall of Receipts: the real outcomes your crew produced.</p></div>
     <div class="card"><b style="color:var(--navy)">Governance is the game</b><p class="small" style="margin-top:6px">Every agent has a named owner: you. Mastery raises autonomy, but the hard floor never moves: send, pay, delete, and publish stay behind your approval at every level, and every autonomous run ends in a receipt you can audit or revoke.</p></div>
-    <div class="card"><b style="color:var(--navy)">Name candidates (Greg's pick)</b><p class="small" style="margin-top:6px">1. <b>Muse GO</b> (this build's working title)<br>2. <b>Agent Safari</b><br>3. <b>Wild Agents</b><br>4. <b>The Agent Atlas</b><br>5. <b>Catch a Muse</b></p></div>
+    <div class="card"><b style="color:var(--navy)">The name: Agentia</b><p class="small" style="margin-top:6px">Chosen 2026-10-28 as the working name for the store launch, pending a formal trademark search. One invented word for the world the game builds: real streets, real places, full of working agents. Runner-ups held in reserve: Agentopia, then Agent Trails. Retired on collision checks: Pocket Agents and Agent Atlas, and any title built on Muse or GO, which belong to other people's trademarks.</p></div>
   </div>
   <div class="card" style="margin-top:16px">
     <b style="color:var(--navy)">⚔️ Master Trials and 🛡️ Forts (the battle system)</b>
@@ -422,8 +445,8 @@ footer b{color:var(--cream)}
   </div>
   <div class="card" style="margin-top:16px">
     <b style="color:var(--navy)">The economy, designed honestly</b>
-    <p class="small" style="margin-top:6px"><b>Earn (Embers):</b> catch an agent +20 (rarity bonus up to +100), run a real task +15, rate a task genuinely useful +10, daily streak +50. <b>Spend:</b> beacons, storage, boosts, and cosmetics are the sinks, tuned so a free player earns a beacon roughly every two days of real play. <b>Premium (Muse Coins):</b> the same shop accepts Coins for players who would rather accelerate, plus Coin only cosmetics and the Season Pass. <b>Beyond currency:</b> sponsored locations (a cafe or clinic pays to be a spawn hotspot, always labeled "Sponsored"), the Pro tier, and cosmetic bundles. <b>The funnel, plainly:</b> a free player gets every species, every mastery level, and every real task, forever. Paying buys speed, space, and style. It never buys mastery XP outright, never raises an agent's autonomy tier, and never skips an approval gate. No gambling mechanics: where chance exists (wild spawns), the odds are published in the design section of this page. Family safe, regulator clean, prices in plain language.</p>
-    <p class="small" style="margin-top:8px"><b>Currency name candidates (Greg's pick):</b> soft: Embers (this build), Sparks, Glow Drops. Premium: Muse Coins (this build), Core Coins, Aurics.</p>
+    <p class="small" style="margin-top:6px"><b>Earn (Embers):</b> catch an agent +20 (rarity bonus up to +100), run a real task +15, rate a task genuinely useful +10, daily streak +50. <b>Spend:</b> beacons, storage, boosts, and cosmetics are the sinks, tuned so a free player earns a beacon roughly every two days of real play. <b>Premium (Core Coins):</b> the same shop accepts Coins for players who would rather accelerate, plus Coin only cosmetics and the Season Pass. <b>Beyond currency:</b> sponsored locations (a cafe or clinic pays to be a spawn hotspot, always labeled "Sponsored"), the Pro tier, and cosmetic bundles. <b>The funnel, plainly:</b> a free player gets every species, every mastery level, and every real task, forever. Paying buys speed, space, and style. It never buys mastery XP outright, never raises an agent's autonomy tier, and never skips an approval gate. No gambling mechanics: where chance exists (wild spawns), the odds are published in the design section of this page. Family safe, regulator clean, prices in plain language.</p>
+    <p class="small" style="margin-top:8px"><b>Currency names, settled:</b> soft currency is <b>Embers</b> (earned, never bought). Premium currency is <b>Core Coins</b>, named for the glowing core every agent carries, and deliberately not named after anyone else's product.</p>
   </div>
 </section>
 
@@ -431,8 +454,8 @@ footer b{color:var(--cream)}
   <h2 class="sec">From web proof to native app</h2>
   <div class="grid2" style="margin-top:16px">
     <div class="card"><b style="color:var(--navy)">Real in this v1</b><p class="small" style="margin-top:6px">Real device geolocation (with your permission), the full place weighted spawn engine, rarity and catch math, the 14 species Dex, mastery XP and levels, task runs with receipts, your collection saved on this device, and a copy ready Muse brief for every agent you own.</p></div>
-    <div class="card"><b style="color:var(--navy)">Stubbed or simulated in v1</b><p class="small" style="margin-top:6px">Place detection is real and now mandatory in spirit: the game runs on device location alone, reads actual OpenStreetMap places around your GPS fix, and sets turf and depots from them (Google Places is the production upgrade, and it needs an API key). There is deliberately no manual place picker and no override: that is Greg's anti couch-surfing rule. Task outputs are simulated in game; the exported brief is what makes the agent real inside your own Muse. No accounts, no server, no background tracking.</p></div>
-    <div class="card"><b style="color:var(--navy)">Native v2 (iOS + Android, one codebase)</b><p class="small" style="margin-top:6px">React Native + Expo in TypeScript (the web build's catalog, spawn tables, and progression logic carry over as shared modules), a real map with live place categories (Google Places primary, OpenStreetMap fallback; the web prototype can read OpenStreetMap place tags), accounts with server checked spawns, alerts when a rare agent is near, optional camera AR encounters with a fully playable non AR mode, walking friendly spawn points vetted as public, and team collections. One codebase, both stores. One more honest web limit: clearing this browser's data erases a web collection; accounts fix that in v2.</p></div>
+    <div class="card"><b style="color:var(--navy)">Stubbed or simulated in v1</b><p class="small" style="margin-top:6px">Place detection is real and now mandatory in spirit: the game runs on device location alone, reads actual OpenStreetMap places around your GPS fix, and sets turf and depots from them (Google Places is the production upgrade, and it needs an API key). There is deliberately no manual place picker and no override: that is Greg's anti couch-surfing rule. Task outputs are simulated in game; the exported brief is what makes the agent real inside your own Muse. Payments run through a store bridge: honest sandbox on the web, Apple and Google in-app purchase in the native build. No accounts yet, no server, no background tracking; your collection lives on this device, with a backup code as the safety net.</p></div>
+    <div class="card"><b style="color:var(--navy)">The full build (underway)</b><p class="small" style="margin-top:6px">The beta ships as a Capacitor app: this exact game, wrapped natively for TestFlight and Google Play closed testing, with the store bridge switched to real in-app purchases and the policies (privacy, terms, location removal) published alongside. Behind it, the production v1 in React Native + Expo adds accounts with cloud saves and server checked spawns, background alerts when a rare agent is near, and Google Places data. The beta already carries the production safety rules: K-12 schools never host Depots, a driving lockout pauses scanning at road speed, and teleport jumps earn no walking credit. Full plan: LAUNCH-PLAN.md in the project repo.</p></div>
     <div class="card"><b style="color:var(--navy)">Muse integration, honestly</b><p class="small" style="margin-top:6px">Today the bridge is the brief: collect an agent, copy its WHO / WHAT / WHERE YOU STAY IN CHARGE brief into Muse, and it works there. A one tap "send to my Muse" needs a Muse provisioning API that does not exist yet; when it lands, the Dex becomes the front door to your whole crew.</p></div>
   </div>
 </section>
@@ -440,8 +463,9 @@ footer b{color:var(--cream)}
 </main>
 
 <footer><div class="wrap">
-  <b>Muse GO</b> <span class="small">(working title)</span>
-  <p class="small" style="margin-top:8px;max-width:46em">A collection game where the prizes do your work. Built as a playable proof for Greg Lucas. Agents mimic the Muse avatar family look; this is a concept build, not an official Meta product, and no partnership is implied. Play safe: public places only.</p>
+  <b>Agentia</b> <span class="small">(working name, pending trademark search)</span>
+  <p class="small" style="margin-top:8px;max-width:46em">A collection game where the prizes do your work. Built for Greg Lucas. Agents carry the Muse inspired look as a tribute inside a game of our own; Agentia is not an official Meta product, and no partnership is implied. Play safe: public places only, never while driving.</p>
+  <p class="small" style="margin-top:6px"><a href="privacy.html">Privacy</a> · <a href="terms.html">Terms</a> · <a href="support.html">Support and location removal</a></p>
 </div></footer>
 
 <div class="modal" id="encModal" role="dialog" aria-modal="true" aria-labelledby="encName">
@@ -510,7 +534,8 @@ var PLACES=[
  {id:"pharmacy",label:"Pharmacy",icon:"💊",flavor:"Care adjacent. Medical agents drift over from the clinic next door."},
  {id:"restaurant",label:"Restaurant / Cafe",icon:"🍽️",flavor:"Meal service energy. Chefs run this turf, and they know it."},
  {id:"grocery",label:"Grocery / Market",icon:"🛒",flavor:"Fresh ingredients draw Chefs and Gardeners alike."},
- {id:"school",label:"School / University",icon:"🎓",flavor:"Learning lives here. Teachers hold court, Scientists visit."},
+ {id:"school",label:"School (K-12)",icon:"🏫",flavor:"Learning lives here. Teachers hold court. Production safety rule: K-12 schools never host Depots."},
+ {id:"university",label:"University",icon:"🎓",flavor:"Campus ground. Teachers hold court, Scientists and Motivators roam, and Depots are welcome here."},
  {id:"library",label:"Library",icon:"📚",flavor:"Quiet stacks. Teachers and Scientists browse; rare finds hide here."},
  {id:"gym",label:"Gym",icon:"🏋️",flavor:"Dawn and dusk surges. Trainers own this ground."},
  {id:"park",label:"Park / Trail",icon:"🌳",flavor:"Open ground. Gardeners and Trainers roam; anything can wander through."},
@@ -548,12 +573,12 @@ var AGENTS=[
          ["Build my week of meals","A full week plan with one consolidated shopping list.",3,45],
          ["Run my kitchen system","Standing meal planning, pantry tracking, and list building on a weekly rhythm.",5,70]],
   brief:{who:"a joyful, exacting chef who treats a home kitchen like it matters",what:"plan meals around real ingredients and real schedules, build shopping lists, and coach technique step by step",never:"never invent an allergy safe claim, and never order groceries without approval"}},
- {id:"teacher",name:"Teacher",prop:"📐",accent:"#4d9be6",rarityBase:"Common",places:["school","library"],blurb:"Makes hard things learnable.",
+ {id:"teacher",name:"Teacher",prop:"📐",accent:"#4d9be6",rarityBase:"Common",places:["school","university","library"],blurb:"Makes hard things learnable.",
   tasks:[["Explain it like I'm new","Any topic, taught at your level with a check for understanding.",1,25],
          ["Build my study plan","A spaced plan with practice questions and progress checks.",3,45],
          ["Run my learning program","A standing curriculum with weekly lessons, reviews, and adjustments.",5,70]],
   brief:{who:"a patient, sharp teacher who believes the learner is smart and the explanation is the variable",what:"explain anything at the right level, build study plans, generate practice, and track what has actually been learned",never:"never do a student's graded work for them, and never fake a progress report"}},
- {id:"scientist",name:"Scientist",prop:"🔬",accent:"#8b6fd8",rarityBase:"Epic",places:["museum","school","library"],blurb:"Rare, curious, and allergic to sloppy claims.",
+ {id:"scientist",name:"Scientist",prop:"🔬",accent:"#8b6fd8",rarityBase:"Epic",places:["museum","school","university","library"],blurb:"Rare, curious, and allergic to sloppy claims.",
   tasks:[["Fact check this claim","Sources, confidence levels, and what would change the verdict.",2,40],
          ["Design my experiment","Hypothesis, method, and the measurement that settles it.",3,50],
          ["Run my research watch","Monitors a field, flags what matters, and briefs you weekly.",5,75]],
@@ -598,7 +623,7 @@ var AGENTS=[
          ["Plan my service or ceremony","Order, readings, music, and roles for a service, wedding, or memorial, drafted with care.",3,45],
          ["Run my rhythm of care","A standing practice: weekly reflection, gratitude and grief check ins, and community care reminders.",5,70]],
   brief:{who:"a gentle, steady chaplain who meets people where they are and carries confidences carefully",what:"offer reflection and comfort, help plan services and ceremonies, and keep a rhythm of gratitude, grief, and community care",never:"never preach at the owner, never assume a faith tradition, and never repeat a confidence anywhere"}},
- {id:"motivator",name:"Motivator",prop:"📣",accent:"#ff7847",rarityBase:"Uncommon",places:["worship","gym","school"],blurb:"Momentum, bottled. Honest fire, no fake hype.",
+ {id:"motivator",name:"Motivator",prop:"📣",accent:"#ff7847",rarityBase:"Uncommon",places:["worship","gym","school","university"],blurb:"Momentum, bottled. Honest fire, no fake hype.",
   tasks:[["Give me today's spark","One honest encouragement and a check in question, tuned to what you are actually working on.",1,25],
          ["Coach my week","Breaks a big goal into this week's moves and tracks the streaks with you.",3,45],
          ["Run my accountability system","Morning brief, midweek honest mirror, and a Friday receipt of promised versus done.",5,70]],
@@ -746,7 +771,7 @@ function heroFig(){
 }
 /* ============ STATE ============ */
 var KEY="musego_v1";
-var S={place:null,caught:{},receipts:[],tasksRun:0,embers:100,coins:0,beacons:1,boostTasks:0,storageBonus:0,rangeBonus:0,sunset:false,beaconFor:null,lastDay:"",streak:0,linked:{},combo:0,bestCombo:0,captures:0,scans:0,questDay:"",quests:{},station:null,snacks:1,depotSpins:{},battlesWon:0,snackActive:false};
+var S={place:null,caught:{},receipts:[],tasksRun:0,embers:100,coins:0,beacons:1,boostTasks:0,storageBonus:0,rangeBonus:0,sunset:false,beaconFor:null,lastDay:"",streak:0,linked:{},combo:0,bestCombo:0,captures:0,scans:0,questDay:"",quests:{},station:null,snacks:1,depotSpins:{},battlesWon:0,snackActive:false,onboarded:false,walkDate:"",walkedDay:0,walkBank:0,purchases:{},passengerUntil:0};
 try{var raw=localStorage.getItem(KEY);if(raw){var p=JSON.parse(raw);if(p&&p.caught){for(var k in S){if(p[k]!==undefined)S[k]=p[k];}}}}catch(e){}
 /* Location law (Greg, 2026-10-28): turf is never chosen. place starts null every load and is only ever set from a real GPS fix plus real detected places. */
 S.place=null;
@@ -784,7 +809,8 @@ function catFromTags(t){
   if(a==="pharmacy"||h==="pharmacy")return "pharmacy";
   if(a==="restaurant"||a==="cafe"||a==="fast_food"||a==="bar"||a==="pub")return "restaurant";
   if(s==="supermarket"||s==="convenience"||s==="grocery"||a==="marketplace")return "grocery";
-  if(a==="school"||a==="university"||a==="college")return "school";
+  if(a==="university"||a==="college")return "university";
+  if(a==="school"||a==="kindergarten")return "school";
   if(a==="library")return "library";
   if(l==="fitness_centre"||l==="sports_centre"||a==="gym")return "gym";
   if(l==="park"||l==="garden"||l==="pitch")return "park";
@@ -1044,6 +1070,7 @@ function depotKey(d){return d.name+"@"+d.lat.toFixed(4)+","+d.lon.toFixed(4);}
 function buildDepots(){
   DEPOTS=[];var seenK={};
   Object.keys(DETECTED||{}).forEach(function(cat){
+    if(cat==="school")return; /* production safety rule: no Depots at K-12 schools */
     (DETECTED[cat]||[]).forEach(function(it){
       if(!it.name)return;var k=it.name+cat;if(seenK[k])return;seenK[k]=1;
       DEPOTS.push({name:it.name,cat:cat,lat:it.lat,lon:it.lon,dist:it.dist});
@@ -1143,7 +1170,7 @@ function syncPlaces(){
   var box=document.getElementById("flavorBox");if(!box)return;
   var h=new Date().getHours();
   var tod=h<6?"Night shift hours. Only the devoted are out.":h<11?"Morning hours. Trainers and Teachers are up early. Motivators surge at dawn, wherever dawn finds you.":h<14?"Midday. Chefs are mid service and Bankers are at their desks.":h<18?"Afternoon. Builders and Mechanics are finishing jobs.":"Evening. Artists come out, and Pilots ride the last flight banks.";
-  if(!playerPos){box.innerHTML="<b>📍 No location fix yet.</b> Muse GO runs on location alone, so nothing spawns until your device says where you are. Turn on location above: that one tap is the entire gate, and there is no other door.";return;}
+  if(!playerPos){box.innerHTML="<b>📍 No location fix yet.</b> Agentia runs on location alone, so nothing spawns until your device says where you are. Turn on location above: that one tap is the entire gate, and there is no other door.";return;}
   var dc=Object.keys(DETECTED||{});
   if(!dc.length){box.innerHTML="<b>On your ground:</b> open ground rules while place data loads or when nothing mapped is near. Spawns run unweighted from your real position. <span>"+tod+"</span>";return;}
   var here=AGENTS.filter(function(a){return a.places.some(function(p){return dc.indexOf(p)>=0;});});
@@ -1152,7 +1179,7 @@ function syncPlaces(){
 }
 function requestLocation(){
   var out=document.getElementById("geoOut");
-  if(!navigator.geolocation){out.textContent="Geolocation is not available on this device, so Muse GO cannot run here. The game is location, all the way down.";return;}
+  if(!navigator.geolocation){out.textContent="Geolocation is not available on this device, so Agentia cannot run here. The game is location, all the way down.";return;}
   out.textContent="Locating...";
   navigator.geolocation.getCurrentPosition(function(pos){
     var la=pos.coords.latitude,lo=pos.coords.longitude;
@@ -1162,8 +1189,9 @@ function requestLocation(){
     if(MAP){MAP.setView(playerPos,16);if(PLAYER)PLAYER.setLatLng(playerPos);}
     detectPlaces(la,lo);
     syncPlaces();
+    startWatch();renderOnboard();
   },function(){
-    out.textContent="Location is off or blocked. Muse GO cannot run without it: no fix, no spawns, no workaround. Allow location for this site in your browser settings, then tap again.";
+    out.textContent="Location is off or blocked. Agentia cannot run without it: no fix, no spawns, no workaround. Allow location for this site in your browser settings, then tap again.";
     playerPos=null;syncPlaces();
   },{timeout:12000,maximumAge:60000});
 }
@@ -1185,8 +1213,12 @@ function spawnOne(){
 }
 var wildNow=[];
 document.getElementById("scanBtn").addEventListener("click",function(){
+  if(LAST_SPEED>11&&Date.now()>(S.passengerUntil||0)){
+    toast("Scanning is paused at driving speed. Never play while driving. Passengers: tap 'I am a passenger' in the location card up top.");
+    return;
+  }
   if(!playerPos){
-    toast("Location first. Muse GO runs on your real location alone, so scanning stays locked until your device fixes where you are.");
+    toast("Location first. Agentia runs on your real location alone, so scanning stays locked until your device fixes where you are.");
     var gate=document.getElementById("locGate");if(gate){gate.scrollIntoView({behavior:"smooth",block:"center"});gate.classList.remove("gatepulse");void gate.offsetWidth;gate.classList.add("gatepulse");}
     requestLocation();
     return;
@@ -1332,7 +1364,7 @@ document.getElementById("throwBtn").addEventListener("click",function(){
 /* ============ DEX + CREW ============ */
 function briefText(a){
   var L=levelFor((S.caught[a.id]||{xp:0}).xp);
-  return "AGENT BRIEF: "+a.name+" (Muse agent)\nMastery: L"+L.n+" "+L.name+" · Named owner: me · Collected in Muse GO · The agent takes direction only from its named owner, who can revoke it at any time.\n\nWHO (the soul)\nYou are "+a.name+", a Muse agent. Your character: "+a.brief.who+". Your bearing: calm, precise, and plain spoken. Your values: the owner's real outcome over looking busy, honesty over polish, a receipt for everything. You speak plainly, you show your work, and you leave a receipt for everything you do.\n\nWHAT (the job)\nYour job: "+a.brief.what+". Stay inside your specialty: anything outside it routes back to me, you do not improvise into another profession. Every completed task ends with a receipt: what was done, what was used, what is still open.\n\nWHERE YOU STAY IN CHARGE\nI am your named owner. Gate tiers: Tier 1 is read only and reversible (research, summarize, draft); Tier 2 creates or changes my own material, nothing leaves my hands yet; Tier 3 is anything that leaves the system or is hard to undo. At my agent's current mastery ("+L.name+"), it may: "+L.auto.toLowerCase()+". Hard floor at every level, no exceptions and no setting lowers it: sending, paying, deleting, publishing, signing, or sharing private data always need my explicit per action approval, recorded with approver and timestamp. Kill switch: if I say stop, halt immediately, finish nothing in flight, and confirm halted. Never, for this agent: "+a.brief.never+".";
+  return "AGENT BRIEF: "+a.name+" (Muse agent)\nMastery: L"+L.n+" "+L.name+" · Named owner: me · Collected in Agentia · The agent takes direction only from its named owner, who can revoke it at any time.\n\nWHO (the soul)\nYou are "+a.name+", a Muse agent. Your character: "+a.brief.who+". Your bearing: calm, precise, and plain spoken. Your values: the owner's real outcome over looking busy, honesty over polish, a receipt for everything. You speak plainly, you show your work, and you leave a receipt for everything you do.\n\nWHAT (the job)\nYour job: "+a.brief.what+". Stay inside your specialty: anything outside it routes back to me, you do not improvise into another profession. Every completed task ends with a receipt: what was done, what was used, what is still open.\n\nWHERE YOU STAY IN CHARGE\nI am your named owner. Gate tiers: Tier 1 is read only and reversible (research, summarize, draft); Tier 2 creates or changes my own material, nothing leaves my hands yet; Tier 3 is anything that leaves the system or is hard to undo. At my agent's current mastery ("+L.name+"), it may: "+L.auto.toLowerCase()+". Hard floor at every level, no exceptions and no setting lowers it: sending, paying, deleting, publishing, signing, or sharing private data always need my explicit per action approval, recorded with approver and timestamp. Kill switch: if I say stop, halt immediately, finish nothing in flight, and confirm halted. Never, for this agent: "+a.brief.never+".";
 }
 function renderDex(){
   var g=document.getElementById("dexGrid");g.innerHTML="";
@@ -1437,7 +1469,7 @@ var SHOP=[
 ];
 function applyScene(){var r=document.getElementById("radar");if(S.sunset){r.style.background="radial-gradient(circle at 50% 50%,#7a4a21 0%,#3d2c14 55%,#241a08 100%)";var m=document.getElementById("map");if(m)m.style.filter="sepia(.45) hue-rotate(-12deg) saturate(1.25)";}}
 function renderShop(){
-  document.getElementById("walletLine").textContent=S.embers+" Embers · "+S.coins+" Muse Coins";
+  document.getElementById("walletLine").textContent=S.embers+" Embers · "+S.coins+" Core Coins";
   document.getElementById("invLine").textContent="· Beacons: "+S.beacons+" · Roster: "+rosterCount()+"/"+rosterCapacity()+(S.boostTasks>0?" · XP Boost active ("+S.boostTasks+" runs)":"")+(S.rangeBonus>0?" · Range +"+S.rangeBonus:"");
   document.getElementById("stSparks").textContent=S.embers;
   document.getElementById("stCoins").textContent=S.coins;
@@ -1460,7 +1492,7 @@ function renderShop(){
       var cost=cur==="embers"?it.embers:it.coins;
       if(cost==null||S[cur]<cost)return;
       S[cur]-=cost;it.buy();save();renderAll();
-      toast(it.name+" is yours. Paid "+cost+" "+(cur==="embers"?"Embers":"Muse Coins")+", in plain language, no surprises.");
+      toast(it.name+" is yours. Paid "+cost+" "+(cur==="embers"?"Embers":"Core Coins")+", in plain language, no surprises.");
     });
   });
   syncBeacon();
@@ -1477,9 +1509,122 @@ document.getElementById("beaconBtn").addEventListener("click",function(){
   S.beacons--;S.beaconFor=beaconSel.value;save();renderShop();
   toast("Beacon lit. Your next scan will draw a "+agentById(S.beaconFor).name+" to you.");
 });
-document.getElementById("testCoinsBtn").addEventListener("click",function(){
-  S.coins+=500;save();renderAll();
-  toast("+500 test Muse Coins (v1 simulation). In the native app these come from the app store, at the plain prices listed.");
+/* coin purchases live in the Store Bridge block (sandbox on web, IAP in native) */
+/* ============ ONBOARDING: the guided first hunt ============ */
+function obSteps(){
+  return [
+   {t:"Turn on your location",done:!!playerPos},
+   {t:"Scan the area with the golden orb",done:S.scans>0},
+   {t:"Catch your first agent (tap one standing on the map)",done:S.captures>0},
+   {t:"Put an agent to work: run a task from My Crew",done:S.tasksRun>0}
+  ];
+}
+function renderOnboard(){
+  var card=document.getElementById("onboardCard");if(!card)return;
+  if(S.onboarded){card.style.display="none";return;}
+  var st=obSteps(),box=document.getElementById("obSteps");if(!box)return;box.innerHTML="";
+  st.forEach(function(s,i){var d=document.createElement("div");d.className="small";d.style.cssText="font-weight:700;color:"+(s.done?"#1d7a3a":"var(--navy)");d.textContent=(s.done?"✅ ":"⬜ ")+(i+1)+". "+s.t;box.appendChild(d);});
+  if(st.every(function(s){return s.done;})){
+    S.onboarded=true;S.embers+=25;save();card.style.display="none";
+    confetti(70);bigBanner("🎯 FIRST HUNT COMPLETE","+25 Embers welcome bonus");renderShop();
+  }
+}
+document.getElementById("obSkip").addEventListener("click",function(){S.onboarded=true;save();renderOnboard();toast("Guide skipped. The map is yours.");});
+/* ============ CONTINUOUS LOCATION: walking, buddy credit, anti-spoof ============ */
+var WATCH_ID=null,LAST_FIX=null,LAST_SPEED=0;
+function dayKeyOf(d){return d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate();}
+function topBuddyId(){var ids=Object.keys(S.caught);if(!ids.length)return null;ids.sort(function(x,y){return S.caught[y].xp-S.caught[x].xp;});return ids[0];}
+function onMove(pos){
+  var c=pos.coords,now=Date.now();
+  if(c.speed!=null)LAST_SPEED=c.speed;
+  if(LAST_FIX){
+    var d=haversineM(LAST_FIX.lat,LAST_FIX.lng,c.latitude,c.longitude),dt=(now-LAST_FIX.t)/1000;
+    if(dt>0){
+      var spd=d/Math.max(dt,1);
+      if(d>1500&&dt<20){toast("That jump looks like a teleport, not travel. Walking credit paused: Agentia trusts feet, not spoofs.");}
+      else if(spd<=3.6&&d>=3){
+        var dk=dayKeyOf(new Date());
+        if(S.walkDate!==dk){S.walkDate=dk;S.walkedDay=0;}
+        S.walkedDay+=d;S.walkBank+=d;
+        if(S.walkBank>=500){
+          var chunks=Math.floor(S.walkBank/500);S.walkBank-=chunks*500;
+          var bid=topBuddyId();
+          if(bid&&S.caught[bid]){
+            var before=levelFor(S.caught[bid].xp),gain=2*chunks;
+            S.caught[bid].xp+=gain;var after=levelFor(S.caught[bid].xp);
+            S.caught[bid].activity=(S.caught[bid].activity||[]).concat([{what:"Walked with you ("+Math.round(S.walkedDay)+" m today)",when:now,xp:gain}]);
+            if(after.n>before.n){bigBanner("⭐ LEVEL UP!",agentById(bid).name+" is now L"+after.n+" "+after.name);confetti(50);}
+            else toast("🚶 Buddy credit: "+agentById(bid).name+" earned +"+gain+" XP walking with you.");
+          }
+        }
+        save();
+      }
+    }
+  }
+  LAST_FIX={lat:c.latitude,lng:c.longitude,t:now};
+  var wl=document.getElementById("walkLine");if(wl)wl.textContent=Math.round(S.walkedDay)+" m";
+  var db=document.getElementById("driveBox");
+  if(db)db.style.display=(LAST_SPEED>11&&now>(S.passengerUntil||0))?"block":"none";
+}
+function startWatch(){
+  if(WATCH_ID!==null||!navigator.geolocation)return;
+  WATCH_ID=navigator.geolocation.watchPosition(onMove,function(){},{enableHighAccuracy:true,maximumAge:5000,timeout:25000});
+}
+document.getElementById("passengerBtn").addEventListener("click",function(){S.passengerUntil=Date.now()+15*60000;save();var db=document.getElementById("driveBox");if(db)db.style.display="none";toast("Passenger mode on for 15 minutes. Behind the wheel? Eyes up: the agents will wait.");});
+/* ============ STORE BRIDGE: payments (Apple/Google IAP in native, honest sandbox on web) ============ */
+var COIN_PACKS=[
+ {pid:"coins_100",coins:100,price:"$0.99"},
+ {pid:"coins_550",coins:550,price:"$4.99"},
+ {pid:"coins_1200",coins:1200,price:"$9.99"},
+ {pid:"coins_2600",coins:2600,price:"$19.99"}
+];
+var StoreBridge={
+  mode:function(){return (window.Capacitor||window.AgentiaNative)?"native":"sandbox";},
+  purchase:function(pid,label,price,done){
+    if(this.mode()==="native"&&window.AgentiaNative&&window.AgentiaNative.purchase){window.AgentiaNative.purchase(pid,function(ok){done(!!ok);});return;}
+    var ok=window.confirm("SANDBOX PURCHASE (web beta)\n\n"+label+" for "+price+"\n\nNo real charge happens here. In the store app this is an Apple or Google in-app purchase, verified on the server.\n\nOK simulates a successful purchase.");
+    done(!!ok);
+  },
+  restore:function(done){
+    if(this.mode()==="native"&&window.AgentiaNative&&window.AgentiaNative.restore){window.AgentiaNative.restore(done);return;}
+    done(0);
+  }
+};
+function renderCoinPacks(){
+  var g=document.getElementById("coinPacks");if(!g)return;g.innerHTML="";
+  COIN_PACKS.forEach(function(p){
+    var d=document.createElement("div");d.style.cssText="border:1px solid var(--line);border-radius:12px;padding:12px;background:#fff";
+    d.innerHTML="<b style='color:var(--navy)'>🪙 "+p.coins+" Core Coins</b><p class='small mut' style='margin-top:2px'>"+p.price+" USD, one time. Coins buy speed, space, and style, never mastery.</p><button class='btn btn-amber btn-sm' style='margin-top:8px' type='button'>Buy for "+p.price+"</button>";
+    d.querySelector("button").addEventListener("click",function(){
+      StoreBridge.purchase(p.pid,p.coins+" Core Coins",p.price,function(ok){
+        if(!ok){toast("Purchase cancelled. Nothing charged.");return;}
+        S.coins+=p.coins;S.purchases[p.pid]=(S.purchases[p.pid]||0)+1;save();renderAll();
+        toast("+"+p.coins+" Core Coins. "+(StoreBridge.mode()==="sandbox"?"(Sandbox: no real charge.)":"Purchase verified.")+" Mastery is still earned, never bought.");
+      });
+    });
+    g.appendChild(d);
+  });
+}
+document.getElementById("restoreBtn").addEventListener("click",function(){
+  StoreBridge.restore(function(n){toast(StoreBridge.mode()==="sandbox"?"Sandbox mode: no store purchases exist to restore in the web beta. Your game lives on this device, plus your backup code.":("Restore complete: "+n+" purchase record(s) found."));});
+});
+/* ============ SAVE BACKUP / RESTORE (bridge until cloud accounts ship) ============ */
+document.getElementById("backupBtn").addEventListener("click",function(){
+  var code=btoa(unescape(encodeURIComponent(JSON.stringify(S))));
+  var box=document.getElementById("saveCodeBox");box.style.display="block";box.value=code;box.select();
+  if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(code).catch(function(){});
+  toast("Backup code ready: copied if your browser allowed it, and shown in the box either way. Keep it somewhere safe.");
+});
+document.getElementById("restoreSaveBtn").addEventListener("click",function(){
+  var box=document.getElementById("saveCodeBox");
+  if(box.style.display==="none"||!box.value.trim()){box.style.display="block";box.focus();toast("Paste your backup code in the box, then tap Restore again.");return;}
+  try{
+    var p=JSON.parse(decodeURIComponent(escape(atob(box.value.trim()))));
+    if(!p||!p.caught)throw new Error("bad code");
+    for(var k in S){if(p[k]!==undefined)S[k]=p[k];}
+    S.place=null;save();renderAll();if(typeof buildWild==="function")buildWild();
+    toast("Save restored. Welcome back, explorer.");
+  }catch(e){toast("That code did not parse as an Agentia backup. Nothing was changed.");}
 });
 function renderMatrix(){
   var t=document.getElementById("matrixTable");
@@ -1489,7 +1634,7 @@ function renderMatrix(){
     t.appendChild(tr);
   });
 }
-function renderAll(){renderDex();renderCrew();renderReceipts();renderStats();renderShop();renderQuests();renderFort();}
+function renderAll(){renderDex();renderCrew();renderReceipts();renderStats();renderShop();renderQuests();renderFort();renderOnboard();renderCoinPacks();var wl=document.getElementById("walkLine");if(wl)wl.textContent=Math.round(S.walkedDay||0)+" m";}
 document.getElementById("logoFig").innerHTML=museFig({name:"Muse",accent:"#f5a623",prop:""},34);
 document.getElementById("youFig").innerHTML=museFig({name:"You",accent:"#2bb3a3",prop:""},52);
 document.getElementById("recenterBtn").addEventListener("click",function(){if(MAP)MAP.setView(playerPos||mapCenter,16);});

@@ -44,7 +44,7 @@ ok((html.match(/prop:"/g) || []).length >= 14, "every agent has a profession pro
 
 // Economy (Greg addendum 2026-10-28)
 ok(html.includes("Embers"), "soft currency named (Embers candidate)");
-ok(html.includes("Muse Coins"), "premium currency named (Muse Coins candidate)");
+ok(html.includes("Core Coins"), "premium currency named Core Coins (renamed off Muse, 2026-10-28)");
 ok(html.includes("Spawn Beacon"), "spawn beacons in shop");
 ok(html.includes("Roster Storage +10"), "storage expansion in shop");
 ok(html.includes("Mastery XP Boost"), "XP boost in shop, framed as speedup");
@@ -52,11 +52,11 @@ ok(html.includes("Golden Hour Scene"), "cosmetic scene in shop");
 ok(html.includes("Map Range Extender"), "range extender in shop");
 ok(html.includes("Season Pass, $4.99"), "season pass priced in plain language");
 ok(html.includes("$7.99 per month"), "Pro tier priced in plain language");
-ok(html.includes("$0.99 for 100"), "coin pack price points stated");
+ok(html.includes("coins_100") && html.includes("$0.99"), "coin pack price points stated");
 ok(html.includes("Sponsored"), "sponsored locations stream, labeled");
 ok(html.includes("never buys mastery"), "guardrail: money never buys mastery");
 ok(html.includes("no loot boxes"), "no gambling mechanics stated");
-ok(html.includes("test Coins (v1 simulation"), "coin purchases simulated and labeled in v1");
+ok(html.includes("SANDBOX PURCHASE (web beta)"), "sandbox purchases labeled honestly in the web beta");
 ok(html.includes("Daily streak"), "daily streak earn wired");
 ok(html.includes("rosterCapacity"), "roster capacity enforced");
 
@@ -126,6 +126,26 @@ ok(html.includes("clipPath"), "outfits are clipped to the torso");
 ["doctor","nurse","chef","teacher","scientist","mechanic","pilot","trainer","artist","banker","gardener","builder","chaplain","motivator"].forEach(function(id){
   ok(html.includes('case "'+id+'"'), "outfit defined for: " + id);
 });
+
+// Agentia rebrand (Greg, 2026-10-28: name not tied to Muse)
+ok(html.includes("<title>Agentia: Collect AI Agents"), "Agentia is the store-bound name");
+ok(html.includes("Core Coins"), "premium currency renamed to Core Coins");
+ok(!html.includes("Muse Coins") && !html.includes("Agentia GO") && !html.includes("Agentia: Collect Agents in the Wild</title>"), "old Muse GO branding retired");
+
+// Full build: onboarding, movement, store bridge, backup, safety (2026-10-28)
+ok(html.includes("onboardCard") && html.includes("Your first hunt"), "guided first hunt present");
+ok(html.includes("obSteps") && html.includes("renderOnboard"), "onboarding steps tracked and rendered");
+ok(html.includes("startWatch") && html.includes("watchPosition"), "continuous location watch for walking credit");
+ok(html.includes("Buddy credit") && html.includes("walkBank"), "buddy earns XP from walked distance");
+ok(html.includes("teleport"), "teleport jumps earn no credit (anti spoof)");
+ok(html.includes("passengerBtn") && html.includes("I am a passenger"), "driving lockout with passenger attestation");
+ok(html.includes('"university"') && html.includes("University"), "university is its own place category");
+ok(html.includes('cat==="school"'), "K-12 schools excluded from Depots");
+ok(html.includes("StoreBridge") && html.includes("SANDBOX PURCHASE"), "payments run through the store bridge with honest sandbox");
+ok(html.includes("coins_2600") && html.includes("restoreBtn"), "coin packs and restore purchases wired");
+ok(!html.includes("testCoinsBtn"), "unlabeled test mint removed");
+ok(html.includes("backupBtn") && html.includes("saveCodeBox"), "backup code export and restore present");
+ok(html.includes("privacy.html") && html.includes("terms.html") && html.includes("support.html"), "policy pages linked from the game");
 
 // Greg laws
 ok(!html.includes("—"), "no em dashes anywhere");
